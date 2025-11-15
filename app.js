@@ -4,7 +4,7 @@
 // ============================================
 
 // CONFIGURAÇÃO
-const WEBHOOK_URL = 'https://iavendas-n8n.tkxtrv.easypanel.host/webhook/2a093c22-b223-4bc5-8ae8-b18446d75ceb';
+const WEBHOOK_URL = 'https://iavendas-n8n.tkxtrv.easypanel.host/webhook/313ee9cc-b465-4154-8cc9-4e8145dbd38b';
 
 // ESTADO DA APLICAÇÃO
 let currentSubject = null;
