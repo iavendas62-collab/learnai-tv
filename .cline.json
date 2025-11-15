@@ -1,0 +1,17 @@
+{
+  "watch": {
+    "enabled": true,
+    "paths": ["*.html", "app.js", "css/*.css", "*.md", "*.json"],
+    "onChange": {
+      "run": [
+        "bash ./auto-commit.sh"
+      ]
+    }
+  },
+  "project": {
+    "name": "LearnAI TV 2.0",
+    "developed_by": "Cline AI",
+    "date": "2025-11-15",
+    "hackathon": "CS Girlies AI 4 Students Hackathon 2025"
+  }
+}

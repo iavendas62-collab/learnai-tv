@@ -1,0 +1,542 @@
+* ============================================
+   ESTILOS VISUAIS GRANDES - COLE NO FINAL
+   ============================================ */
+
+/* Banner visual GRANDE no topo */
+.visual-banner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px;
+    border-radius: 25px;
+    margin-bottom: 40px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.visual-banner h2 {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Grid de imagens do banner */
+.banner-images {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Cards de formas */
+.shape-card {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.shape-card:hover {
+    transform: translateY(-10px) scale(1.05);
+}
+
+.shape-visual {
+    font-size: 5rem;
+    margin-bottom: 10px;
+    animation: shapeFloat 3s ease-in-out infinite;
+}
+
+.shape-card span {
+    display: block;
+    font-size: 1.3rem;
+    color: #333;
+    font-weight: bold;
+}
+
+@keyframes shapeFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(10deg); }
+}
+
+/* Visualização de números */
+.number-visual {
+    font-size: 3.5rem;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Grid de dinheiro */
+.money-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 15px;
+}
+
+.money-card {
+    padding: 25px 15px;
+    border-radius: 15px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.money-card.note {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.money-card.coin {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+}
+
+.money-card:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Cards de palavras */
+.word-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Banner emoji genérico */
+.banner-emoji {
+    font-size: 5rem;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+/* Seções de conteúdo */
+.content-section {
+    margin: 30px 0;
+    padding: 30px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Títulos de seção */
+.section-title {
+    font-size: 2.2rem;
+    color: #3b82f6;
+    margin: 20px 0;
+    padding-left: 15px;
+    border-left: 5px solid #3b82f6;
+}
+
+.subsection-title {
+    font-size: 1.8rem;
+    color: #9333ea;
+    margin: 15px 0;
+}
+
+/* Texto do conteúdo */
+.content-text {
+    font-size: 1.6rem;
+    line-height: 1.8;
+    color: #374151;
+    margin: 15px 0;
+}
+
+/* Destaque de números */
+.number-highlight {
+    display: inline-block;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+    padding: 3px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.9rem;
+    margin: 0 3px;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+}
+
+/* Lista de itens */
+.list-item {
+    font-size: 1.6rem;
+    padding: 12px 20px;
+    margin: 10px 0;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-left: 4px solid #3b82f6;
+    border-radius: 10px;
+}
+
+/* Exemplo visual */
+.visual-example {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.shape-demo {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.demo-shape {
+    font-size: 8rem;
+    margin-bottom: 20px;
+    animation: demoRotate 4s linear infinite;
+}
+
+@keyframes demoRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.demo-label {
+    font-size: 1.8rem;
+    color: #1f2937;
+    font-weight: bold;
+}
+
+/* Objetos visuais */
+.object-visual {
+    font-size: 6rem;
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 20px;
+    margin: 20px 0;
+}
+
+/* CÁLCULO INTERATIVO */
+.interactive-calculation {
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    padding: 40px;
+    border-radius: 25px;
+    margin: 40px 0;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.interactive-calculation h4 {
+    font-size: 2.2rem;
+    color: #3730a3;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Visualização do cálculo */
+.visual-calc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.calc-group {
+    text-align: center;
+}
+
+.calc-objects {
+    font-size: 2.5rem;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.calc-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1e40af;
+    background: #3b82f6;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+}
+
+.calc-plus {
+    font-size: 3.5rem;
+    color: #9333ea;
+    font-weight: bold;
+}
+
+/* Caixa de pergunta */
+.question-box {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    margin-top: 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.question-text {
+    font-size: 2rem;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* Botões de resposta GRANDES */
+.answer-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.big-answer-btn {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border: none;
+    padding: 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.big-answer-btn:hover:not(:disabled) {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.6);
+}
+
+.answer-number {
+    font-size: 3.5rem;
+    color: white;
+    font-weight: bold;
+    display: block;
+}
+
+.big-answer-btn.correct-answer {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    animation: correctBounce 0.6s ease-out;
+}
+
+.big-answer-btn.wrong-answer {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    animation: wrongShake 0.5s ease-out;
+}
+
+.big-answer-btn.show-correct {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: 5px solid #fbbf24;
+    animation: showCorrectPulse 1s ease-out infinite;
+}
+
+@keyframes correctBounce {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.2) rotate(-10deg); }
+    75% { transform: scale(1.15) rotate(10deg); }
+}
+
+@keyframes wrongShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-15px) rotate(-5deg); }
+    75% { transform: translateX(15px) rotate(5deg); }
+}
+
+@keyframes showCorrectPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(251, 191, 36, 0); }
+}
+
+.big-answer-btn:disabled {
+    cursor: not-allowed;
+}
+
+/* Feedback da resposta */
+.answer-feedback {
+    margin-top: 30px;
+}
+
+.feedback-box {
+    padding: 30px;
+    border-radius: 20px;
+    animation: feedbackPop 0.5s ease-out;
+}
+
+@keyframes feedbackPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.feedback-box.success {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border: 4px solid #10b981;
+}
+
+.feedback-box.error {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    border: 4px solid #ef4444;
+}
+
+.feedback-emoji {
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.feedback-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.feedback-box.success .feedback-title {
+    color: #065f46;
+}
+
+.feedback-box.error .feedback-title {
+    color: #991b1b;
+}
+
+.feedback-text {
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 0;
+}
+
+.feedback-box.success .feedback-text {
+    color: #047857;
+}
+
+.feedback-box.error .feedback-text {
+    color: #b91c1c;
+}
+
+/* SEÇÃO DE ATIVIDADE */
+.activity-section {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    padding: 40px;
+    border-radius: 25px;
+    margin: 40px 0;
+    border: 4px solid #f59e0b;
+    box-shadow: 0 8px 30px rgba(245, 158, 11, 0.3);
+}
+
+.activity-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.activity-icon {
+    font-size: 4rem;
+    animation: activityBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes activityBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2) rotate(15deg); }
+}
+
+.activity-header h3 {
+    font-size: 2.5rem;
+    color: #92400e;
+    margin: 0;
+}
+
+.activity-content {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.activity-step {
+    font-size: 1.7rem;
+    padding: 15px;
+    margin: 10px 0;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-left: 4px solid #3b82f6;
+    border-radius: 10px;
+}
+
+.activity-action {
+    text-align: center;
+}
+
+.btn-large {
+    padding: 20px 40px;
+    font-size: 1.8rem;
+}
+
+/* CONFETE GRANDE */
+.big-confetti {
+    position: fixed;
+    font-size: 3rem;
+    z-index: 10000;
+    pointer-events: none;
+    animation: confettiFall 3s ease-out forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        top: -50px;
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        top: 100vh;
+        transform: rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .banner-images {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .visual-calc {
+        flex-direction: column;
+    }
+    
+    .answer-options {
+        grid-template-columns: 1fr;
+    }
+}

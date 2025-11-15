@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnAI TV 2.0 — Seu Tutor Inteligente</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+<body>
+    <header>
+        <h1>🧠 LearnAI TV 2.0</h1>
+        <div class="header-info">
+            <div id="user-score-display">⭐ 0 pts | 📊 Nível 1</div>
+            <div class="breadcrumb">
+                <span id="breadcrumb-text">Bem-vindo!</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Sidebar SEMPRE VISÍVEL -->
+        <nav id="sidebar">
+            <h2>📚 Matérias</h2>
+            <button class="subject-btn" data-subject="Matemática">
+                <span class="subject-icon">🧮</span>
+                <span>Matemática</span>
+            </button>
+            <button class="subject-btn" data-subject="Português">
+                <span class="subject-icon">📝</span>
+                <span>Português</span>
+            </button>
+            <button class="subject-btn" data-subject="Ciências">
+                <span class="subject-icon">🔬</span>
+                <span>Ciências</span>
+            </button>
+            <button class="subject-btn" data-subject="História">
+                <span class="subject-icon">🏰</span>
+                <span>História</span>
+            </button>
+            <button class="subject-btn" data-subject="Geografia">
+                <span class="subject-icon">🌍</span>
+                <span>Geografia</span>
+            </button>
+            <button class="subject-btn" data-subject="Idiomas">
+                <span class="subject-icon">💬</span>
+                <span>Idiomas</span>
+            </button>
+        </nav>
+
+        <!-- Área principal dinâmica -->
+        <div id="content-area">
+            <!-- Estado inicial: escolher matéria -->
+            <div id="welcome-screen" class="loading-screen">
+                <h2 style="font-size: 3rem; margin-bottom: 30px;">👋 Bem-vindo ao LearnAI TV!</h2>
+                <p style="font-size: 2rem; color: #fff;">Use as <strong style="color: #9333ea;">setas ← →</strong> para navegar pela barra lateral</p>
+                <p style="font-size: 1.8rem; margin-top: 20px;">Escolha uma matéria para começar a estudar</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p><strong>LearnAI TV 2.0</strong> - Educação Gamificada com IA 🎓 | Powered by n8n + Claude AI</p>
+    </footer>
+
+    <!-- Dica de navegação -->
+    <div class="nav-hint">
+        <strong>🎮 Dica:</strong> Use as setas do controle para navegar e ENTER para selecionar
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

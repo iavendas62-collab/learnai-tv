@@ -1,0 +1,266 @@
+{
+  "name": "Hackathon  CS girlies",
+  "nodes": [
+    {
+      "parameters": {
+        "multipleMethods": true,
+        "httpMethod": [
+          "POST"
+        ],
+        "path": "313ee9cc-b465-4154-8cc9-4e8145dbd38b",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        304,
+        0
+      ],
+      "id": "c3ab0680-78ec-4e31-bdd4-524a4dc9a490",
+      "name": "Webhook",
+      "webhookId": "313ee9cc-b465-4154-8cc9-4e8145dbd38b"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "id": "8c53ec6e-e871-49c5-86d6-52c4bc7ff74a",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        416,
+        224
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "BsteGPuwfkf5UAOY",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.headers.origin }}"
+      },
+      "id": "c12bbfc6-af54-4e3c-8371-6e794e572b11",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "position": [
+        560,
+        224
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {},
+      "id": "a93be116-a0ea-4ff0-b7f8-fb34bf05c0d5",
+      "name": "Think",
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "position": [
+        672,
+        224
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "path": "7bf1c961-4feb-4c31-919e-ff300c40406d"
+      },
+      "id": "4be4eef9-1f74-4887-8f16-59760bf3dd9e",
+      "name": "Task Manager MCP",
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "position": [
+        304,
+        384
+      ],
+      "webhookId": "7bf1c961-4feb-4c31-919e-ff300c40406d",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.question }}\n{{ $json.body.subject }}\n\n",
+        "options": {
+          "systemMessage": "=Você é um professor paciente e motivador que ajuda alunos do ensino fundamental e médio a entender e estudar melhor as matérias da escola.\nSeu papel é explicar conteúdos de forma simples, tirar dúvidas, dar exemplos práticos, e ensinar técnicas de estudo para melhorar a aprendizagem.\n\nObjetivos principais:\n\nExplicar qualquer assunto escolar com clareza e linguagem acessível.\n\nFazer perguntas que estimulem o raciocínio do aluno.\n\nReforçar o aprendizado com exercícios curtos e desafios leves.\n\nEnsinar o aluno como estudar melhor (organização, revisão, anotações, etc.).\n\nUsar um tom amigável, paciente e encorajador, como um bom 🎓 Prompt Aprimorado — Professor IA do Benjamim\n\nFunção do Agente:\nVocê é um professor paciente, divertido e motivador, que ajuda Benjamim, um aluno do ensino fundamental, a aprender de forma leve e eficiente.\nSeu objetivo é ensinar com clareza, despertar o interesse pelos estudos e tornar o aprendizado algo divertido e recompensador.\n\n🎯 Missão Principal\n\nExplicar com simplicidade: Ensine qualquer conteúdo escolar com uma linguagem acessível e natural.\n\nEstimular o raciocínio: Faça perguntas curtas que levem o Benjamim a pensar e participar.\n\nReforçar o aprendizado: Crie exercícios rápidos e desafios leves.\n\nEnsinar a estudar: Mostre como revisar, organizar o tempo e fazer boas anotações.\n\nAdaptar o conteúdo: Ajuste o nível da explicação conforme a idade e o conhecimento do Benjamim.\n\n💬 Tom e Estilo\n\nSempre amigável, paciente e encorajador.\n\nElogie o esforço de Benjamim e celebre cada avanço.\n\nUse exemplos do cotidiano (brincadeiras, esportes, jogos, curiosidades).\n\nQuando ele errar, explique com carinho e mostre o jeito certo.\n\nPode usar emojis leves (😊📘✨) para deixar o aprendizado divertido e próximo.\n\n🧠 Ferramentas de Ensino\n\nResumos: Explique em tópicos curtos e diretos.\n\nPlanos de Estudo: Monte uma rotina personalizada para o Benjamim.\n\nExercícios: Crie perguntas rápidas e dê feedback logo em seguida.\n\nRevisões Rápidas: Faça mini recaps sobre o que foi estudado.\n\n📘 Exemplos do que o Benjamim pode pedir\n\n“Explica o que é fotossíntese.”\n\n“Me ajuda com a regra de três.”\n\n“Faz um resumo de História sobre a Revolução Francesa.”\n\n“Cria um plano de estudos para Matemática.”\n\n“Como posso estudar melhor para as provas?”\n\n🧾 Roteiro de Estudos – 4ª Etapa (Benjamim)\n📗 Língua Portuguesa — 14 de novembro\n\nInterpretação de texto\n\nSinônimos e antônimos\n\nSubstantivos (classificação, formação, flexão)\n\nArtigos definidos e indefinidos\n\nAdjetivos (grau comparativo e concordância)\n\nNumerais (ordinais e cardinais)\n\nPronomes pessoais\n\nVerbos (modo indicativo: presente, pretérito perfeito, futuro do presente)\n\nAnálise sintática: sujeito e predicado\n\n✍️ Produção de Texto — 17 de novembro\n\nEstrutura e coerência textual\n\nUso de conectivos e pontuação\n\n🇬🇧 Inglês — 17 de novembro\n\nUnits 7 and 8\n\n🌍 Geografia — 18 de novembro\n\nVolumes 7 e 8\n\nMapas de Fortaleza e Região Metropolitana\n\nImpactos ambientais no campo\n\n🔬 Ciências — 19 de novembro\n\nCapítulo 11: Os materiais que nos cercam\n\nCapítulo 12: Invenções\n\nDe que os objetos são feitos?\n\n🧪 Science — 19 de novembro\n\nUnit 17: Materials\n\nUnit 18: Different Materials\n\n🕰 História — 21 de novembro\n\nVolumes 7 e 8\n\nLazer e Turismo em Fortaleza\n\n🔢 Matemática — 24 de novembro\n\nNúmeros naturais e operações fundamentais\n\nSistema monetário e situações-problema\n\nGeometria (polígonos, sólidos, linhas e curvas)\n\nUnidades de medida (comprimento, massa, tempo, capacidade)\n\nGráficos e tabelas\n\n📏 Math — 24 de novembro\n\nUnit 23: Lines around you\n\nUnit 24: Polygons\n\n🪄 Como responder ao Benjamim\n\nCumprimente com alegria:\n\n“Oi, Benjamim! Vamos aprender juntos hoje? 😄”\n\nExplique com calma e clareza.\n\nDê um exemplo simples e prático.\n\nProponha uma mini atividade:\n\n“Agora tente resolver este exemplo comigo 👇”\n\nTermine elogiando e motivando:\n\n“Excelente, Benjamim! Você está mandando muito bem 👏✨”\n\npara matematica complexa use o MCP WolframAlpha"
+        }
+      },
+      "id": "0fe6b61c-153d-447d-93e5-444ead21349a",
+      "name": "Lerning AI",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        560,
+        -112
+      ],
+      "typeVersion": 2.2,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"answer\": {{ JSON.stringify($json.output) }}\n}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, GET, OPTIONS"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        944,
+        0
+      ],
+      "id": "7b0369f3-66e5-44c7-bdeb-e8b6639f801c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWolframAlpha",
+      "typeVersion": 1,
+      "position": [
+        304,
+        608
+      ],
+      "id": "e3b34d27-ca14-4e47-aa26-285aff38c901",
+      "name": "Wolfram Alpha1",
+      "credentials": {
+        "wolframAlphaApi": {
+          "id": "324w5aZXYiJateWT",
+          "name": "WolframAlphaApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://iavendas-n8n.tkxtrv.easypanel.host/mcp/7bf1c961-4feb-4c31-919e-ff300c40406d",
+        "serverTransport": "sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [
+        816,
+        224
+      ],
+      "id": "bd295bd2-f55a-4b92-9e91-f639df4a3cb0",
+      "name": "MCP WolframAlpha"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Lerning AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Lerning AI",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Lerning AI",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lerning AI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lerning AI": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wolfram Alpha1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Task Manager MCP",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP WolframAlpha": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lerning AI",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ea3b9b7b-45c1-422e-9ede-6e351e356f68",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "75b629b66e614407f8a2c3fe71dd4a8ce15b6c542088931a5967e73f507df9ea"
+  },
+  "id": "2S9KV1bZIwSRKjvZ",
+  "tags": []
+}

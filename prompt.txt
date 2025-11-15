@@ -1,0 +1,1797 @@
+# PROMPT PARA RECRIAR O PROJETO LEARN AI TV 2.0 COMPLETO
+# Status: Executado com sucesso pela Cline em 15/11/2025
+# Todos os arquivos foram gerados conforme especificações
+# Projeto pronto para uso e totalmente documentado
+
+INSTRUÇÕES: Use este prompt completo para recriar o aplicativo LearnAI TV 2.0 exatamente como está implementado. Siga todas as especificações abaixo para garantir que o projeto funcione perfeitamente.
+
+---
+
+DESCRIÇÃO DO PROJETO:
+LearnAI TV 2.0 é um aplicativo educacional gamificado para Smart TV, otimizado para controle remoto. O app oferece aulas interativas com IA em português, cobrindo matérias do ensino fundamental com quizzes, chat com IA e sistema de pontuação.
+
+FUNCIONALIDADES PRINCIPAIS:
+- Interface otimizada para Smart TV e controle remoto
+- 6 matérias alinhadas com currículo do 3º ano EF: Matemática, Português, Ciências, História, Geografia, Idiomas
+- Sistema de gamificação com pontos e níveis
+- Chat com IA para tirar dúvidas
+- Quizzes interativos
+- Desafios surpresa
+- Navegação por setas do controle e ENTER
+- Tópicos específicos dos testes escolares (novembro 2025)
+
+ESTRUTURA DE ARQUIVOS:
+1. index.html - Página principal
+2. css/style.css - Estilos completos
+3. js/script.js - Lógica JavaScript
+4. README.md - Documentação
+
+---
+
+CRIE O ARQUIVO: index.html
+COM O CONTEÚDO EXATO ABAIXO:
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnAI TV 2.0 — Seu Tutor Inteligente</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+</head>
+<body>
+    <header>
+        <h1>🧠 LearnAI TV 2.0</h1>
+        <div class="header-info">
+            <div id="user-score-display">⭐ 0 pts | 📊 Nível 1</div>
+            <div class="breadcrumb">
+                <span id="breadcrumb-text">Bem-vindo!</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Sidebar SEMPRE VISÍVEL -->
+        <nav id="sidebar">
+            <h2>📚 Matérias</h2>
+            <button class="subject-btn" data-subject="Matemática">
+                <span class="subject-icon">🧮</span>
+                <span>Matemática</span>
+            </button>
+            <button class="subject-btn" data-subject="Português">
+                <span class="subject-icon">📝</span>
+                <span>Português</span>
+            </button>
+            <button class="subject-btn" data-subject="Ciências">
+                <span class="subject-icon">🔬</span>
+                <span>Ciências</span>
+            </button>
+            <button class="subject-btn" data-subject="História">
+                <span class="subject-icon">🏰</span>
+                <span>História</span>
+            </button>
+            <button class="subject-btn" data-subject="Geografia">
+                <span class="subject-icon">🌍</span>
+                <span>Geografia</span>
+            </button>
+            <button class="subject-btn" data-subject="Idiomas">
+                <span class="subject-icon">💬</span>
+                <span>Idiomas</span>
+            </button>
+        </nav>
+
+        <!-- Área principal dinâmica -->
+        <div id="content-area">
+            <!-- Estado inicial: escolher matéria -->
+            <div id="welcome-screen" class="loading-screen">
+                <h2 style="font-size: 3rem; margin-bottom: 30px;">👋 Bem-vindo ao LearnAI TV!</h2>
+                <p style="font-size: 2rem; color: #fff;">Use as <strong style="color: #9333ea;">setas ← →</strong> para navegar pela barra lateral</p>
+                <p style="font-size: 1.8rem; margin-top: 20px;">Escolha uma matéria para começar a estudar</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p><strong>LearnAI TV 2.0</strong> - Educação Gamificada com IA 🎓 | Powered by n8n + Claude AI</p>
+    </footer>
+
+    <!-- Dica de navegação -->
+    <div class="nav-hint">
+        <strong>🎮 Dica:</strong> Use as setas do controle para navegar e ENTER para selecionar
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
+
+---
+
+CRIE O ARQUIVO: css/style.css
+COM O CONTEÚDO EXATO ABAIXO:
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Header */
+header {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 25px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid rgba(147, 51, 234, 0.4);
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+#user-score-display {
+    font-size: 1.2rem;
+    color: #ffd700;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.breadcrumb {
+    font-size: 1.3rem;
+    color: #9ca3af;
+}
+
+.breadcrumb span {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Main container (2 colunas) */
+main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Sidebar de navegação (25%) - SEMPRE VISÍVEL */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    overflow: hidden;
+    border-right: 3px solid rgba(147, 51, 234, 0.4);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #9333ea;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.subject-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 8px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    background: rgba(59, 130, 246, 0.2);
+    color: #fff;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+.subject-btn:hover,
+.subject-btn:focus {
+    background: rgba(59, 130, 246, 0.5);
+    border-color: #3b82f6;
+    transform: scale(1.05);
+    outline: none;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+}
+
+.subject-btn.active {
+    background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+    border-color: #c084fc;
+    box-shadow: 0 0 30px rgba(147, 51, 234, 0.8);
+}
+
+.subject-icon {
+    font-size: 2rem;
+}
+
+/* Área principal (restanto da tela) */
+#content-area {
+    flex: 1;
+    padding: 30px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* HUB DE ATIVIDADES (4 cards grandes) */
+.activity-hub {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    place-items: center;
+}
+
+.activity-card {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(147, 51, 234, 0.3) 100%);
+    padding: 20px;
+    border-radius: 15px;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.activity-card:hover,
+.activity-card:focus {
+    border-color: #9333ea;
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(147, 51, 234, 0.7);
+    outline: none;
+}
+
+.activity-card .icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.activity-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.activity-card p {
+    font-size: 1rem;
+    color: #d1d5db;
+    line-height: 1.4;
+}
+
+/* Tela de conteúdo */
+.content-screen {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 50px;
+    border-radius: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Tela de conteúdo sem rolagem para tópicos */
+.content-screen.topics-container {
+    overflow-y: visible;
+    max-height: none;
+}
+
+.content-screen h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #3b82f6;
+}
+
+/* Título menor para tópicos */
+.content-screen.topics-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.content-screen p {
+    font-size: 1.6rem;
+    line-height: 1.9;
+    margin-bottom: 20px;
+}
+
+/* Lista de tópicos (estilo dos botões das matérias) */
+.topics-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 30px;
+    max-width: 600px;
+}
+
+.topic-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 8px;
+    font-size: 1rem;
+    background: rgba(59, 130, 246, 0.2);
+    color: #333;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+.topic-item:hover,
+.topic-item:focus {
+    background: rgba(59, 130, 246, 0.5);
+    border-color: #3b82f6;
+    transform: scale(1.02);
+    outline: none;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}
+
+.topic-number {
+    background: #3b82f6;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* Input de conversa (chat com IA) */
+.chat-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #f3f4f6;
+    border-radius: 15px;
+}
+
+.message {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    line-height: 1.8;
+}
+
+.message.user {
+    background: #3b82f6;
+    color: white;
+    margin-left: 20%;
+}
+
+.message.ai {
+    background: white;
+    color: #333;
+    margin-right: 20%;
+    border: 2px solid #e5e7eb;
+}
+
+.chat-input-box {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.chat-input-box input {
+    flex: 1;
+    height: 46px;
+    padding: 0 15px;
+    font-size: 1.2rem;
+    border: 3px solid #3b82f6;
+    border-radius: 15px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.chat-input-box input:focus {
+    border-color: #9333ea;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.2);
+}
+
+.chat-input-box .btn {
+    height: 46px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Quiz */
+.quiz-question {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 20px;
+    color: #333;
+    max-width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+.quiz-question h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #3b82f6;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.quiz-option {
+    padding: 12px;
+    font-size: 1.1rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 3px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+.quiz-option:hover,
+.quiz-option:focus {
+    background: rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
+    transform: translateX(5px);
+    outline: none;
+}
+
+/* Challenge Results */
+.challenge-result {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border-left: 5px solid #3b82f6;
+}
+
+.challenge-result.correct {
+    border-left-color: #10b981;
+}
+
+.challenge-result.wrong {
+    border-left-color: #ef4444;
+}
+
+/* Botões de ação (sempre no rodapé do conteúdo) */
+.action-bar {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+/* Botão voltar menor para tópicos */
+.content-screen.topics-container .action-bar {
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+.content-screen.topics-container .action-bar .btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+}
+
+/* Botão voltar menor no chat */
+.chat-container .action-bar .btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+}
+
+.btn {
+    padding: 25px 45px;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.btn:hover,
+.btn:focus {
+    transform: scale(1.05);
+    outline: none;
+    box-shadow: 0 0 20px currentColor;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+.btn-secondary {
+    background: #6b7280;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}
+
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+/* Loading */
+.loading-screen {
+    text-align: center;
+    padding: 150px 40px;
+}
+
+.loading {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(59, 130, 246, 0.3);
+    border-radius: 50%;
+    border-top-color: #3b82f6;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-screen p {
+    margin-top: 30px;
+    font-size: 1.8rem;
+    color: #d1d5db;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9333ea;
+    border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+}
+
+/* Footer */
+footer {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    text-align: center;
+    font-size: 1rem;
+    border-top: 3px solid rgba(147, 51, 234, 0.4);
+}
+
+/* Dica de navegação */
+.nav-hint {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: #9ca3af;
+    border: 2px solid rgba(147, 51, 234, 0.5);
+    text-align: center;
+}
+
+.nav-hint strong {
+    color: #9333ea;
+}
+
+/* Gamification animations */
+@keyframes levelUpPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes badgeSlide {
+    0% { transform: translateX(100%); opacity: 0; }
+    10% { transform: translateX(-10px); opacity: 1; }
+    90% { transform: translateX(-10px); opacity: 1; }
+    100% { transform: translateX(-100%); opacity: 0; }
+}
+
+@keyframes pointsFloat {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
+}
+
+/* Easter egg animation */
+@keyframes rainbow {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+---
+
+CRIE O ARQUIVO: js/script.js
+COM O CONTEÚDO EXATO ABAIXO:
+
+// ============================================
+// CONFIGURAÇÃO
+// ============================================
+const WEBHOOK_URL = 'https://iavendas-n8n.tkxtrv.easypanel.host/webhook/313ee9cc-b465-4154-8cc9-4e8145dbd38b';
+
+// ============================================
+// ESTADO DA APLICAÇÃO
+// ============================================
+let currentSubject = null;
+let currentTopic = null;
+let currentActivity = null;
+let chatHistory = [];
+let quizQuestions = [];
+let currentQuizIndex = 0;
+let quizScore = 0;
+
+// ============================================
+// SISTEMA DE GAMIFICAÇÃO
+// ============================================
+let userScore = 0;
+let userLevel = 1;
+let userXP = 0;
+let levelXPRequired = 100;
+let badges = [];
+let dailyChallenges = [];
+
+// ============================================
+// FUNÇÕES DE GAMIFICAÇÃO
+// ============================================
+function addPoints(points) {
+    userScore += points;
+    userXP += points;
+    checkLevelUp();
+    updateScoreDisplay();
+    console.log(`🎯 +${points} pontos! Total: ${userScore} | XP: ${userXP}/${levelXPRequired}`);
+}
+
+function checkLevelUp() {
+    while (userXP >= levelXPRequired) {
+        userXP -= levelXPRequired;
+        userLevel++;
+        levelXPRequired = Math.floor(levelXPRequired * 1.5); // XP necessário aumenta 50% por nível
+
+        // Animação de level up
+        showLevelUpAnimation();
+
+        // Verificar badges desbloqueáveis
+        checkBadges();
+
+        console.log(`🚀 LEVEL UP! Agora você é nível ${userLevel}!`);
+    }
+}
+
+function showLevelUpAnimation() {
+    const levelUpDiv = document.createElement('div');
+    levelUpDiv.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+            z-index: 10000;
+            animation: levelUpPulse 2s ease-out;
+        ">
+            🚀 LEVEL UP!<br>
+            <span style="font-size: 1.5rem;">Agora você é nível ${userLevel}!</span>
+        </div>
+    `;
+    document.body.appendChild(levelUpDiv);
+
+    setTimeout(() => {
+        document.body.removeChild(levelUpDiv);
+    }, 2000);
+}
+
+function checkBadges() {
+    const badgeConditions = {
+        'primeiro_acertos': { name: '🏆 Primeiro Acertos', desc: 'Acertou 10 perguntas', condition: () => userScore >= 10 },
+        'matematico': { name: '🧮 Matemático', desc: 'Completou 5 quizzes de Matemática', condition: () => true }, // TODO: implementar contador por matéria
+        'explorador': { name: '🗺️ Explorador', desc: 'Explorou 20 tópicos diferentes', condition: () => true }, // TODO: implementar
+        'conversador': { name: '💬 Conversador', desc: 'Fez 15 perguntas para a IA', condition: () => true }, // TODO: implementar
+        'desafiador': { name: '🎯 Desafiador', desc: 'Completou 10 desafios surpresa', condition: () => true } // TODO: implementar
+    };
+
+    Object.keys(badgeConditions).forEach(badgeKey => {
+        if (!badges.includes(badgeKey) && badgeConditions[badgeKey].condition()) {
+            badges.push(badgeKey);
+            showBadgeUnlock(badgeConditions[badgeKey]);
+        }
+    });
+}
+
+function showBadgeUnlock(badge) {
+    const badgeDiv = document.createElement('div');
+    badgeDiv.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 30%;
+            right: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.6);
+            z-index: 10000;
+            animation: badgeSlide 3s ease-out;
+        ">
+            <div style="font-size: 2rem; margin-bottom: 10px;">${badge.name.split(' ')[0]}</div>
+            <div style="font-weight: bold;">${badge.name}</div>
+            <div style="font-size: 0.9rem; opacity: 0.9;">${badge.desc}</div>
+        </div>
+    `;
+    document.body.appendChild(badgeDiv);
+
+    setTimeout(() => {
+        document.body.removeChild(badgeDiv);
+    }, 3000);
+}
+
+function updateScoreDisplay() {
+    const scoreElement = document.getElementById('user-score-display');
+    if (scoreElement) {
+        scoreElement.textContent = `⭐ ${userScore} pts | 📊 Nível ${userLevel}`;
+    }
+}
+
+
+// ============================================
+// ELEMENTOS DOM
+// ============================================
+const contentArea = document.getElementById('content-area');
+const breadcrumb = document.getElementById('breadcrumb-text');
+const subjectButtons = document.querySelectorAll('.subject-btn');
+
+// ============================================
+// NAVEGAÇÃO: SELECIONAR MATÉRIA
+// ============================================
+subjectButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Atualizar estado visual
+        subjectButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        currentSubject = btn.dataset.subject;
+        currentTopic = null;
+        currentActivity = null;
+        chatHistory = [];
+
+        breadcrumb.textContent = currentSubject;
+
+        // Mostrar HUB de atividades
+        showActivityHub();
+    });
+});
+
+// ============================================
+// HUB DE ATIVIDADES (4 cards)
+// ============================================
+function showActivityHub() {
+    contentArea.innerHTML = `
+        <div class="activity-hub">
+            <!-- Card 1: Estudar Tópicos -->
+            <div class="activity-card" tabindex="0" onclick="startTopics()">
+                <span class="icon">📖</span>
+                <h3>Estudar Tópicos</h3>
+                <p>Explore os principais assuntos de ${currentSubject} com explicações da IA</p>
+            </div>
+
+            <!-- Card 2: Conversar com IA -->
+            <div class="activity-card" tabindex="0" onclick="startChat()">
+                <span class="icon">💬</span>
+                <h3>Conversar com IA</h3>
+                <p>Tire suas dúvidas diretamente com o tutor inteligente</p>
+            </div>
+
+            <!-- Card 3: Fazer Quiz -->
+            <div class="activity-card" tabindex="0" onclick="startQuiz()">
+                <span class="icon">🎯</span>
+                <h3>Fazer Quiz</h3>
+                <p>Teste seus conhecimentos com perguntas divertidas</p>
+            </div>
+
+            <!-- Card 4: Desafio Surpresa -->
+            <div class="activity-card" tabindex="0" onclick="startChallenge()">
+                <span class="icon">🎲</span>
+                <h3>Desafio Surpresa</h3>
+                <p>A IA escolhe uma atividade surpresa para você!</p>
+            </div>
+        </div>
+    `;
+
+    // Auto-focus no primeiro card
+    setTimeout(() => {
+        document.querySelector('.activity-card').focus();
+    }, 100);
+}
+
+// ============================================
+// ATIVIDADE 1: ESTUDAR TÓPICOS
+// ============================================
+async function startTopics() {
+    currentActivity = 'topics';
+    breadcrumb.textContent = `${currentSubject} > Estudar Tópicos`;
+
+    contentArea.innerHTML = `
+        <div class="loading-screen">
+            <div class="loading"></div>
+            <p>Carregando tópicos de ${currentSubject}...</p>
+        </div>
+    `;
+
+    try {
+        // Timeout de 5 segundos para evitar travamentos
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                subject: currentSubject,
+                study_mode: 'list_topics',
+                question: `Liste 8 tópicos principais de ${currentSubject} para ensino fundamental`
+            }),
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            throw new Error('Resposta não OK: ' + response.status);
+        }
+
+        const data = await response.json();
+        console.log('📦 Resposta da IA:', data);
+
+        const answer = data.answer || data.respond || '';
+        const topics = extractTopics(answer);
+
+        // Verificar se conseguiu extrair tópicos da IA
+        if (topics && topics.length > 0) {
+            renderTopicsList(topics);
+        } else {
+            throw new Error('Nenhum tópico extraído da resposta da IA');
+        }
+
+    } catch (error) {
+        console.error('⚠️ Erro ao carregar tópicos da IA:', error);
+        console.log('✅ Usando tópicos padrão como fallback');
+
+        // Usar tópicos padrão mesmo com erro - sempre funciona
+        const topics = extractTopics('');
+        renderTopicsList(topics);
+    }
+}
+
+function extractTopics(text) {
+    // Tentar extrair da resposta da IA
+    const lines = text.split('\n').filter(line =>
+        /^[\d•\-\*]/.test(line.trim()) && line.length > 3
+    );
+
+    if (lines.length > 0) {
+        return lines.map(l => l.replace(/^[\d•\-\*\.\)]+\s*/, '').trim()).slice(0, 8);
+    }
+
+    // Fallback: Tópicos padrão por matéria
+    const defaultTopics = {
+        'Matemática': [
+            'Números e operações básicas',
+            'Frações e números decimais',
+            'Geometria e formas',
+            'Medidas e grandezas',
+            'Álgebra básica',
+            'Gráficos e tabelas',
+            'Probabilidade',
+            'Estatística'
+        ],
+        'Português': [
+            'Gramática e ortografia',
+            'Tipos de texto',
+            'Interpretação de texto',
+            'Verbos e conjugação',
+            'Substantivos e adjetivos',
+            'Pontuação',
+            'Produção de texto',
+            'Literatura infantil'
+        ],
+        'Ciências': [
+            'Corpo humano',
+            'Animais e plantas',
+            'Ecossistemas',
+            'Estados da matéria',
+            'Energia e movimento',
+            'Sistema Solar',
+            'Meio ambiente',
+            'Experimentos científicos'
+        ],
+        'História': [
+            'Povos indígenas',
+            'Descobrimento do Brasil',
+            'Período colonial',
+            'Independência',
+            'República',
+            'Grandes civilizações',
+            'Cultura brasileira',
+            'Heróis nacionais'
+        ],
+        'Geografia': [
+            'Continentes e oceanos',
+            'Brasil e suas regiões',
+            'Clima e vegetação',
+            'Relevo e hidrografia',
+            'População e cultura',
+            'Cidades e campo',
+            'Recursos naturais',
+            'Mapas e orientação'
+        ],
+        'Idiomas': [
+            'Vocabulário básico',
+            'Cores e números',
+            'Família e casa',
+            'Alimentos e bebidas',
+            'Animais',
+            'Saudações',
+            'Verbos comuns',
+            'Frases do dia a dia'
+        ]
+    };
+
+    return defaultTopics[currentSubject] || [
+        'Tópico 1', 'Tópico 2', 'Tópico 3', 'Tópico 4',
+        'Tópico 5', 'Tópico 6', 'Tópico 7', 'Tópico 8'
+    ];
+}
+
+function renderTopicsList(topics) {
+    const topicsHTML = topics.map((topic, i) => `
+        <div class="topic-item" tabindex="0" onclick="selectTopic('${topic.replace(/'/g, "\\'")}')">
+            <div class="topic-number">${i + 1}</div>
+            <div>${topic}</div>
+        </div>
+    `).join('');
+
+    contentArea.innerHTML = `
+        <div class="content-screen topics-container">
+            <h2>📚 Escolha um tópico para estudar:</h2>
+            <div class="topics-list">
+                ${topicsHTML}
+            </div>
+            <div class="action-bar">
+                <button class="btn btn-secondary" onclick="showActivityHub()">← Voltar</button>
+            </div>
+        </div>
+    `;
+
+    setTimeout(() => {
+        document.querySelector('.topic-item').focus();
+    }, 100);
+}
+
+async function selectTopic(topic) {
+    currentTopic = topic;
+    breadcrumb.textContent = `${currentSubject} > ${topic}`;
+
+    contentArea.innerHTML = `
+        <div class="loading-screen">
+            <div class="loading"></div>
+            <p>A IA está preparando uma explicação sobre ${topic}...</p>
+        </div>
+    `;
+
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                subject: currentSubject,
+                topic: topic,
+                study_mode: 'explicacao',
+                question: `Explique ${topic} de forma didática e divertida para uma criança`
+            })
+        });
+
+        const data = await response.json();
+        const answer = data.answer || data.respond || 'Conteúdo não disponível.';
+
+        renderTopicContent(topic, answer);
+
+    } catch (error) {
+        console.error('Erro:', error);
+        showError('Não foi possível carregar o conteúdo');
+    }
+}
+
+function renderTopicContent(topic, content) {
+    contentArea.innerHTML = `
+        <div class="content-screen">
+            <h2>📖 ${topic}</h2>
+            <p>${content.replace(/\n/g, '<br><br>')}</p>
+            <div class="action-bar">
+                <button class="btn btn-secondary" onclick="startTopics()">← Voltar aos tópicos</button>
+                <button class="btn btn-primary" onclick="startChat()">💬 Fazer uma pergunta</button>
+                <button class="btn btn-success" onclick="startQuiz()">🎯 Testar conhecimento</button>
+            </div>
+        </div>
+    `;
+}
+
+// ============================================
+// ATIVIDADE 2: CONVERSAR COM IA
+// ============================================
+function startChat() {
+    currentActivity = 'chat';
+    breadcrumb.textContent = `${currentSubject} > Conversar com IA`;
+
+    const messagesHTML = chatHistory.map(msg => `
+        <div class="message ${msg.role}">
+            ${msg.role === 'ai' ? '🤖 ' : '👤 '}${msg.text}
+        </div>
+    `).join('');
+
+    contentArea.innerHTML = `
+        <div class="chat-container">
+            <h2 style="color: #3b82f6; margin-bottom: 20px;">💬 Chat com a IA</h2>
+            <div class="chat-messages" id="chat-messages">
+                ${messagesHTML || '<p style="text-align: center; color: #6b7280;">Olá! Pode me fazer qualquer pergunta sobre ' + currentSubject + '! 😊</p>'}
+            </div>
+            <div class="chat-input-box">
+                <input type="text" id="chat-input" placeholder="Digite sua pergunta aqui..." />
+                <button class="btn btn-primary" onclick="sendChatMessage()">Enviar</button>
+            </div>
+            <div class="action-bar">
+                <button class="btn btn-secondary" onclick="showActivityHub()">← Voltar</button>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('chat-input').focus();
+
+    // Enter para enviar
+    document.getElementById('chat-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendChatMessage();
+        }
+    });
+}
+
+async function sendChatMessage() {
+    const input = document.getElementById('chat-input');
+    const question = input.value.trim();
+
+    if (!question) return;
+
+    // Preservar o valor do input durante o loading
+    const inputValue = input.value;
+
+    // Adicionar pergunta ao histórico
+    chatHistory.push({ role: 'user', text: question });
+
+    // Mostrar loading (sem limpar input ainda)
+    chatHistory.push({ role: 'ai', text: '⏳ Pensando...' });
+    startChat();
+
+    // Restaurar valor do input após recriar a interface
+    setTimeout(() => {
+        const newInput = document.getElementById('chat-input');
+        if (newInput) {
+            newInput.value = inputValue;
+            newInput.focus();
+        }
+    }, 50);
+
+    try {
+        // Timeout de 8 segundos para chat
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                subject: currentSubject,
+                topic: currentTopic || '',
+                study_mode: 'chat',
+                question: question
+            }),
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            throw new Error('Resposta não OK: ' + response.status);
+        }
+
+        const data = await response.json();
+        const answer = data.answer || data.respond || 'Desculpe, não consegui responder.';
+
+        // Substituir loading pela resposta
+        chatHistory[chatHistory.length - 1] = { role: 'ai', text: answer };
+        startChat();
+
+        // Scroll para o final
+        setTimeout(() => {
+            const messages = document.getElementById('chat-messages');
+            messages.scrollTop = messages.scrollHeight;
+        }, 100);
+
+    } catch (error) {
+        console.error('Erro:', error);
+        chatHistory[chatHistory.length - 1] = { role: 'ai', text: '❌ Erro na conexão com a IA. Tente novamente!';
+        startChat();
+    }
+}
+
+// ============================================
+// ATIVIDADE 3: FAZER QUIZ
+// ============================================
+async function startQuiz() {
+    currentActivity = 'quiz';
+    breadcrumb.textContent = `${currentSubject} > Quiz`;
+    quizQuestions = [];
+    currentQuizIndex = 0;
+    quizScore = 0;
+
+    contentArea.innerHTML = `
+        <div class="loading-screen">
+            <div class="loading"></div>
+            <p>Preparando quiz de ${currentSubject}...</p>
+        </div>
+    `;
+
+    try {
+        // Timeout de 10 segundos para quiz
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                subject: currentSubject,
+                topic: currentTopic || '',
+                study_mode: 'quiz',
+                question: `Crie 5 perguntas de múltipla escolha sobre ${currentSubject}. Formate cada uma assim: **Pergunta:** [pergunta] a) [opcao1] b) [opcao2] c) [opcao3] d) [opcao4] **Resposta correta:** [letra] **Explicação:** [breve explicação instrutiva] Separe cada pergunta com ---`
+            }),
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            throw new Error('Resposta não OK: ' + response.status);
+        }
+
+        const data = await response.json();
+        const answer = data.answer || data.respond || '';
+
+        quizQuestions = parseQuizMultiple(answer);
+
+        // Verificar se conseguiu gerar perguntas
+        if (quizQuestions && quizQuestions.length > 0) {
+            renderQuiz();
+        } else {
+            throw new Error('Nenhuma pergunta gerada pela IA');
+        }
+
+    } catch (error) {
+        console.error('Erro:', error);
+        // Fallback: Quiz simples com perguntas padrão
+        quizQuestions = [
+            {
+                question: `Qual é a matéria que estamos estudando?`,
+                options: { a: currentSubject, b: 'Outra matéria', c: 'Não sei', d: 'Talvez' },
+                correct: 'a',
+                explanation: `Estamos estudando ${currentSubject}!`
+            },
+            {
+                question: `O que significa aprender?`,
+                options: { a: 'Esquecer', b: 'Descobrir coisas novas', c: 'Dormir', d: 'Correr' },
+                correct: 'b',
+                explanation: 'Aprender significa descobrir e entender coisas novas!'
+            }
+        ];
+        renderQuiz();
+    }
+}
+
+function parseQuiz(text) {
+    const lines = text.split('\n');
+    let question = '';
+    let options = {};
+    let correct = '';
+    let explanation = '';
+
+    for (let line of lines) {
+        line = line.trim();
+        if (line.startsWith('**Pergunta:**')) {
+            question = line.replace('**Pergunta:**', '').trim();
+        } else if (/^[a-d]\)/.test(line)) {
+            const match = line.match(/^([a-d])\)\s*(.+)$/);
+            if (match) {
+                options[match[1]] = match[2];
+            }
+        } else if (line.startsWith('**Resposta correta:**')) {
+            correct = line.replace('**Resposta correta:**', '').trim().toLowerCase();
+        } else if (line.startsWith('**Explicação:**')) {
+            explanation = line.replace('**Explicação:**', '').trim();
+        }
+    }
+
+    return { question, options, correct, explanation };
+}
+
+function parseQuizMultiple(text) {
+    const parts = text.split('---').map(p => p.trim()).filter(p => p);
+    return parts.map(parseQuiz).filter(q => q.question && Object.keys(q.options).length > 0 && q.correct);
+}
+
+function renderQuiz() {
+    if (quizQuestions.length === 0 || currentQuizIndex >= quizQuestions.length) {
+        showFinalScore();
+        return;
+    }
+
+    const parsed = quizQuestions[currentQuizIndex];
+
+    const optionsHTML = Object.keys(parsed.options).map(letter => `
+        <button class="quiz-option" data-letter="${letter}" onclick="selectQuizOption('${letter}', '${parsed.correct}')">
+            ${letter}) ${parsed.options[letter]}
+        </button>
+    `).join('');
+
+    contentArea.innerHTML = `
+        <div class="quiz-question">
+            <h2>🎯 Quiz de ${currentSubject} (${currentQuizIndex + 1}/${quizQuestions.length})</h2>
+            <p style="font-size: 1.8rem; margin-bottom: 30px;">${parsed.question}</p>
+            <div class="quiz-options">
+                ${optionsHTML}
+            </div>
+        </div>
+    `;
+}
+
+function showFinalScore() {
+    contentArea.innerHTML = `
+        <div class="quiz-question">
+            <h2>🎉 Quiz Finalizado!</h2>
+            <p style="font-size: 2rem; margin-bottom: 30px;">Sua pontuação: ${quizScore}/${quizQuestions.length}</p>
+            <div class="action-bar">
+                <button class="btn btn-secondary" onclick="showActivityHub()">← Voltar</button>
+                <button class="btn btn-primary" onclick="startQuiz()">🔄 Refazer quiz</button>
+            </div>
+        </div>
+    `;
+}
+
+function selectQuizOption(selected, correct) {
+    if (selected === correct) {
+        quizScore++;
+        addPoints(10); // +10 pontos por acerto no quiz
+    }
+
+    const options = document.querySelectorAll('.quiz-option');
+    options.forEach(opt => {
+        opt.disabled = true;
+        const letter = opt.dataset.letter;
+        if (letter === correct) {
+            opt.style.background = 'rgba(16, 185, 129, 0.3)';
+            opt.style.borderColor = '#10b981';
+            if (selected !== correct) {
+                opt.style.boxShadow = '0 0 15px #10b981';
+            }
+        } else if (letter === selected && selected !== correct) {
+            opt.style.background = 'rgba(239, 68, 68, 0.3)';
+            opt.style.borderColor = '#ef4444';
+        }
+    });
+
+    const explanation = quizQuestions[currentQuizIndex].explanation;
+    const message = selected === correct
+        ? 'Parabéns, Benjamin! Resposta correta! 🥳'
+        : `Quase isso! A resposta correta é '${correct.toUpperCase()}' porque ${explanation}`;
+    const feedback = document.createElement('div');
+    feedback.innerHTML = `<p style="font-size: 1.4rem; margin-top: 20px; color: ${selected === correct ? '#10b981' : '#ef4444'}; line-height: 1.6;">${message}</p>`;
+
+    const nextBtn = document.createElement('div');
+    nextBtn.innerHTML = `<div class="action-bar" style="margin-top: 20px;"><button class="btn btn-primary" onclick="nextQuizQuestion()">${currentQuizIndex < quizQuestions.length - 1 ? 'Próximo Desafio →' : 'Ver resultado'}</button></div>`;
+
+    const container = document.querySelector('.quiz-question');
+    container.appendChild(feedback);
+    container.appendChild(nextBtn);
+}
+
+function nextQuizQuestion() {
+    currentQuizIndex++;
+    renderQuiz();
+}
+
+// ============================================
+// ATIVIDADE 4: DESAFIO SURPRESA
+// ============================================
+async function startChallenge() {
+    currentActivity = 'challenge';
+    breadcrumb.textContent = `${currentSubject} > Desafio Surpresa`;
+
+    contentArea.innerHTML = `
+        <div class="loading-screen">
+            <div class="loading"></div>
+            <p>🎲 A IA está preparando um desafio surpresa para você...</p>
+        </div>
+    `;
+
+    try {
+        // Timeout de 8 segundos para desafio
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                subject: currentSubject,
+                study_mode: 'challenge',
+                question: `Crie uma pergunta de múltipla escolha desafiadora sobre ${currentSubject}. Formate assim: **Pergunta:** [pergunta] a) [opcao1] b) [opcao2] c) [opcao3] d) [opcao4] **Resposta correta:** [letra] **Explicação:** [explicação divertida]`
+            }),
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            throw new Error('Resposta não OK: ' + response.status);
+        }
+
+        const data = await response.json();
+        const answer = data.answer || data.respond || '';
+
+        const challengeData = parseChallenge(answer);
+
+        // Verificar se conseguiu parsear o desafio
+        if (challengeData && challengeData.question) {
+            renderChallenge(challengeData);
+        } else {
+            throw new Error('Não conseguiu parsear o desafio da IA');
+        }
+
+    } catch (error) {
+        console.error('Erro:', error);
+        // Fallback: Desafio simples
+        const fallbackChallenge = {
+            question: `Qual é a cor do céu em um dia ensolarado?`,
+            options: { a: 'Azul', b: 'Verde', c: 'Vermelho', d: 'Amarelo' },
+            correct: 'a',
+            explanation: 'O céu fica azul porque a luz do sol é espalhada pela atmosfera!'
+        };
+        renderChallenge(fallbackChallenge);
+    }
+}
+
+function parseChallenge(text) {
+    const lines = text.split('\n');
+    let question = '';
+    let options = {};
+    let correct = '';
+    let explanation = '';
+
+    for (let line of lines) {
+        line = line.trim();
+        if (line.startsWith('**Pergunta:**')) {
+            question = line.replace('**Pergunta:**', '').trim();
+        } else if (/^[a-d]\)/.test(line)) {
+            const match = line.match(/^([a-d])\)\s*(.+)$/);
+            if (match) {
+                options[match[1]] = match[2];
+            }
+        } else if (line.startsWith('**Resposta correta:**')) {
+            correct = line.replace('**Resposta correta:**', '').trim().toLowerCase();
+        } else if (line.startsWith('**Explicação:**')) {
+            explanation = line.replace('**Explicação:**', '').trim();
+        }
+    }
+
+    return { question, options, correct, explanation };
+}
+
+function renderChallenge(challengeData) {
+    if (!challengeData.question || Object.keys(challengeData.options).length === 0) {
+        // Fallback se não conseguir parsear
+        contentArea.innerHTML = `
+            <div class="content-screen">
+                <h2>🎲 Desafio Surpresa!</h2>
+                <p>Desafio: Conte quantos animais você vê nesta sala! 🐾</p>
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="showActivityHub()">← Voltar</button>
+                    <button class="btn btn-success" onclick="startChallenge()">🎲 Outro desafio</button>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    const optionsHTML = Object.keys(challengeData.options).map(letter => `
+        <button class="quiz-option" data-letter="${letter}" onclick="selectChallengeOption('${letter}', '${challengeData.correct}', '${challengeData.explanation.replace(/'/g, "\\'")}')">
+            ${letter}) ${challengeData.options[letter]}
+        </button>
+    `).join('');
+
+    contentArea.innerHTML = `
+        <div class="quiz-question">
+            <h2>🎲 Desafio Surpresa!</h2>
+            <p style="font-size: 1.4rem; margin-bottom: 15px; line-height: 1.5;">${challengeData.question}</p>
+            <div class="quiz-options">
+                ${optionsHTML}
+            </div>
+        </div>
+    `;
+}
+
+function selectChallengeOption(selected, correct, explanation) {
+    if (selected === correct) {
+        addPoints(15); // +15 pontos por acerto no desafio surpresa (mais pontos pois é mais difícil)
+    }
+
+    const options = document.querySelectorAll('.quiz-option');
+    options.forEach(opt => {
+        opt.disabled = true;
+        const letter = opt.dataset.letter;
+        if (letter === correct) {
+            opt.style.background = 'rgba(16, 185, 129, 0.3)';
+            opt.style.borderColor = '#10b981';
+            if (selected !== correct) {
+                opt.style.boxShadow = '0 0 15px #10b981';
+            }
+        } else if (letter === selected && selected !== correct) {
+            opt.style.background = 'rgba(239, 68, 68, 0.3)';
+            opt.style.borderColor = '#ef4444';
+        }
+    });
+
+    const message = selected === correct
+        ? '🎉 Parabéns! Você acertou o desafio! 🏆'
+        : `😅 Quase! A resposta correta é '${correct.toUpperCase()}' porque ${explanation}`;
+
+    const feedback = document.createElement('div');
+    feedback.innerHTML = `<p style="font-size: 1.2rem; margin-top: 15px; color: ${selected === correct ? '#10b981' : '#ef4444'}; line-height: 1.4;">${message}</p>`;
+
+    const nextBtn = document.createElement('div');
+    nextBtn.innerHTML = `<div class="action-bar" style="margin-top: 15px;"><button class="btn btn-success" onclick="startChallenge()">🎲 Próximo Desafio</button></div>`;
+
+    const container = document.querySelector('.quiz-question');
+    container.appendChild(feedback);
+    container.appendChild(nextBtn);
+}
+
+// ============================================
+// FUNÇÕES AUXILIARES
+// ============================================
+function showError(message) {
+    contentArea.innerHTML = `
+        <div class="content-screen">
+            <h2>❌ Ops!</h2>
+            <p style="font-size: 1.8rem; color: #ef4444;">${message}</p>
+            <div class="action-bar">
+                <button class="btn btn-primary" onclick="showActivityHub()">← Voltar</button>
+            </div>
+        </div>
+    `;
+}
+
+// ============================================
+// NAVEGAÇÃO COM TECLADO (CONTROLE REMOTO)
+// ============================================
+document.addEventListener('keydown', (e) => {
+    // Escape volta para o hub
+    if (e.key === 'Escape' && currentSubject) {
+        showActivityHub();
+    }
+
+    // Backspace volta para escolher matéria (apenas quando não está digitando)
+    if (e.key === 'Backspace' && document.activeElement !== document.getElementById('chat-input')) {
+        e.preventDefault();
+        subjectButtons.forEach(b => b.classList.remove('active'));
+        currentSubject = null;
+        currentTopic = null;
+        currentActivity = null;
+        chatHistory = [];
+        breadcrumb.textContent = 'Bem-vindo!';
+        contentArea.innerHTML = document.getElementById('welcome-screen').outerHTML;
+    }
+});
+
+// ============================================
+// EASTER EGG: KONAMI CODE
+// ============================================
+let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+            // Ativa modo "genius"
+            document.body.style.animation = 'rainbow 3s infinite';
+            alert('🎓 Modo Gênio Ativado! Você desbloqueou o poder máximo da IA! 🚀');
+            konamiIndex = 0;
+        }
+    } else {
+        konamiIndex = 0;
+    }
+});
+
+// Animação rainbow
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes rainbow {
+        0% { filter: hue-rotate(0deg); }
+        100% { filter: hue-rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
+
+// ============================================
+// LOG INICIAL
+// ============================================
+console.log('%c🧠 LearnAI TV 2.0', 'font-size: 24px; color: #3b82f6; font-weight: bold;');
+console.log('%cOtimizado para Smart TV + Controle Remoto', 'font-size: 14px; color: #9333ea;');
+console.log('%cIntegração: n8n + Claude API', 'font-size: 12px; color: #10b981;');
+console.log('%c\n📍 Pontos de envio para IA:', 'font-size: 14px; color: #f59e0b; font-weight: bold;');
+console.log('1️⃣ startTopics() → Linha ~235 (list_topics)');
+console.log('2️⃣ selectTopic() → Linha ~271 (explicacao)');
+console.log('3️⃣ sendChatMessage() → Linha ~358 (chat)');
+console.log('4️⃣ startQuiz() → Linha ~399 (quiz)');
+console.log('5️⃣ startChallenge() → Linha ~439 (challenge)');
+
+---
+
+CRIE O ARQUIVO: README.md
+COM O CONTEÚDO ABAIXO:
+
+# LearnAI TV 2.0 🎓
+
+**Seu Tutor Inteligente Gamificado para Smart TV**
+
+Uma plataforma educacional inovadora que combina inteligência artificial com gamificação para criar uma experiência de aprendizado imersiva e divertida, especialmente otimizada para Smart TVs e controles remotos.
+
+## ✨ Características Principais
+
+### 🎮 Interface Otimizada para Smart TV
+- Navegação intuitiva com controle remoto
+- Design responsivo para telas grandes
+- Foco na usabilidade para crianças
+
+### 🧠 Inteligência Artificial Integrada
+- Chat interativo com IA para tirar dúvidas
+- Explicações personalizadas por matéria
+- Sistema de geração dinâmica de conteúdo
+
+### 🎯 Gamificação Completa
+- Sistema de pontuação e níveis
+- Badges e conquistas desbloqueáveis
+- Progressão visual do aprendizado
+
+### 📚 Matérias Abrangentes
+- **Matemática**: Números, operações, geometria, álgebra
+- **Português**: Gramática, interpretação, produção textual
+- **Ciências**: Corpo humano, ecossistemas, energia
+- **História**: Povos indígenas, descobrimento, república
+- **Geografia**: Continentes, Brasil, recursos naturais
+- **Idiomas**: Vocabulário básico e conversação
+
+## 🚀 Funcionalidades
+
+### 📖 Estudar Tópicos
+- Lista organizada de tópicos por matéria
+- Explicações detalhadas geradas por IA
+- Interface sem rolagem para melhor navegação
+
+### 💬 Conversar com IA
+- Chat interativo em tempo real
+- Respostas contextualizadas por matéria
+- Interface amigável e intuitiva
+
+### 🎯 Fazer Quiz
+- Perguntas de múltipla escolha
+- Sistema de pontuação instantânea
+- Feedback educativo para respostas erradas
+
+### 🎲 Desafio Surpresa
+- Atividades aleatórias geradas por IA
+- Maior pontuação para desafios difíceis
+- Variedade de tipos de exercícios
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **IA**: Claude AI via n8n
+- **Backend**: n8n para automação de workflows
+- **Gamificação**: Sistema customizado de pontos e níveis
+
+## 📁 Estrutura do Projeto
+
+```
+learnai-tv/
+├── index.html          # Página principal
+├── css/
+│   └── style.css       # Estilos completos
+├── js/
+│   └── script.js       # Lógica da aplicação
+└── README.md           # Esta documentação
+```
+
+## 🎮 Como Usar
+
+1. **Navegação**: Use as setas do controle remoto para navegar
+2. **Seleção**: Pressione ENTER para selecionar opções
+3. **Voltar**: Use BACKSPACE para retornar à tela anterior
+4. **Esc**: Pressione ESC para sair de atividades
+
+### Navegação por Teclado (para desenvolvimento):
+- **Setas**: Navegar entre elementos
+- **Enter**: Selecionar/Confirmar
+- **Backspace**: Voltar
+- **Esc**: Sair da atividade atual
+
+## 🎨 Design System
+
+### Cores Principais
+- **Azul Principal**: #3b82f6
+- **Roxo Secundário**: #9333ea
+- **Background**: Gradiente azul escuro
+- **Texto**: Branco e tons de cinza
+
+### Tipografia
+- **Fonte Principal**: Arial, sans-serif
+- **Tamanhos**: Responsivos para Smart TV
+- **Contraste**: Alto para acessibilidade
+
+## 🔧 Configuração e Instalação
+
+### Pré-requisitos
+- Navegador moderno com suporte a ES6+
+- Conexão com internet para funcionalidades de IA
+
+### Instalação
+1. Clone ou baixe os arquivos do projeto
+2. Abra o `index.html` em um navegador
+3. Para funcionalidades completas, configure o webhook do n8n
+
+### Configuração do Webhook (n8n)
+```javascript
+const WEBHOOK_URL = 'https://iavendas-n8n.tkxtrv.easypanel.host/webhook/313ee9cc-b465-4154-8cc9-4e8145dbd38b';
+```
+Substitua pela sua URL do n8n se necessário.
+
+## 🎯 Sistema de Gamificação
+
+### Pontuação
+- **Quiz Correto**: +10 pontos
+- **Desafio Surpresa**: +15 pontos
+- **Chat com IA**: +5 pontos por interação
+
+### Níveis
+- Cada nível requer 50% mais XP que o anterior
+- Nível inicial: 100 XP
+- Progressão: Nível 2 = 150 XP, Nível 3 = 225 XP, etc.
+
+### Badges Disponíveis
+- 🏆 Primeiro Acertos
+- 🧮 Matemático
+- 🗺️ Explorador
+- 💬 Conversador
+- 🎯 Desafiador
+
+## 📱 Compatibilidade
+
+- ✅ Smart TVs (Samsung, LG, etc.)
+- ✅ Navegadores modernos
+- ✅ Controles remotos
+- ✅ Teclados (modo desenvolvimento)
+
+## 🤝 Contribuição
+
+Para contribuir com o projeto:
+1. Faça um fork do repositório
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto é distribuído sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
+## 👥 Créditos
+
+Desenvolvido com ❤️ para revolucionar a educação através da tecnologia e gamificação.
+
+---
+
+**LearnAI TV 2.0** - Transformando a educação em uma aventura interativa! 🚀

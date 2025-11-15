@@ -1,0 +1,30 @@
+{
+  "name": "cs-girlies-project",
+  "version": "2.0.0",
+  "description": "LearnAI TV 2.0 - Sistema educacional gamificado com IA para Smart TVs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "education",
+    "ai",
+    "gamification",
+    "smart-tv",
+    "hackathon",
+    "cs-girls",
+    "cline-generated"
+  ],
+  "author": "Cline AI & Pedro Farias (CS Girlies Hackathon)",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pfarias1972/cs-girlies-project.git"
+  },
+  "homepage": "https://pfarias1972.github.io/cs-girlies-project/",
+  "created": "2025-11-15",
+  "last_updated": "2025-11-15"
+}
