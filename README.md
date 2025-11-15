@@ -27,7 +27,7 @@ LearnAI TV transforma qualquer dispositivo com navegador em um tutor inteligente
 ## 📁 Estrutura do Projeto
 
 ```
-cs-girlies-project/
+learnai-tv/
 ├── index.html                 # Página principal
 ├── css/
 │   └── style.css             # Estilos da aplicação
