@@ -45,8 +45,8 @@ cs-girlies-project/
 ### Opção 1: Abrir Localmente
 ```bash
 # Clonar o repositório
-git clone https://github.com/Pfarias1972/cs-girlies-project.git
-cd cs-girlies-project
+git clone https://github.com/iavendas62-collab/learnai-tv.git
+cd learnai-tv
 
 # Abrir no navegador
 start index.html
@@ -55,7 +55,7 @@ open index.html
 ```
 
 ### Opção 2: GitHub Pages (Online)
-Acesse: https://pfarias1972.github.io/cs-girlies-project/
+Acesse: https://iavendas62-collab.github.io/learnai-tv/
 
 ## 🎮 Como Navegar
 1. **Escolha uma matéria** no menu lateral usando setas ou clique
