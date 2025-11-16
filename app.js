@@ -678,10 +678,14 @@ function parseQuiz(text) {
 
         // Detecta resposta correta
         if (line.toLowerCase().includes('resposta') && line.toLowerCase().includes('correta')) {
-            const correctMatch = line.match(/[a-dA-D]/);
-            if (correctMatch) {
-                correct = correctMatch[0].toLowerCase();
-                console.log(`  ✓ Resposta correta: ${correct}`);
+            // Tenta pegar letra após os dois pontos: "Resposta correta: b"
+            const afterColon = line.split(':')[1];
+            if (afterColon) {
+                const correctMatch = afterColon.match(/[a-dA-D]/);
+                if (correctMatch) {
+                    correct = correctMatch[0].toLowerCase();
+                    console.log(`  ✓ Resposta correta detectada: ${correct} (de "${line}")`);
+                }
             }
             continue;
         }
