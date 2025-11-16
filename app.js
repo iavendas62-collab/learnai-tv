@@ -269,14 +269,14 @@ function getFallbackTopics() {
             'Personagens Importantes'
         ],
         'Geografia': [
-            'Mapas de Fortaleza',
-            'Região Metropolitana',
-            'Relevo do Ceará',
-            'Clima e Vegetação',
+            'A Cidade de Fortaleza',
+            'Localização e Clima de Fortaleza',
+            'Praias e Pontos Turísticos',
+            'História: Forte Schoonenborch',
+            'Região Metropolitana de Fortaleza',
+            'Municípios da RMF',
             'Impactos Ambientais no Campo',
-            'Zona Rural e Urbana',
-            'Hidrografia Local',
-            'Atividades Econômicas'
+            'Práticas Sustentáveis'
         ],
         'Idiomas': [
             'Greetings (Cumprimentos)',
