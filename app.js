@@ -379,7 +379,6 @@ function renderTopicContent(topic, content) {
             <div style="font-size: 1.6rem; line-height: 1.8; max-width: 900px; margin: 0 auto;">
                 ${content.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>')}
             </div>
-            ${interactiveButton}
             <div class="action-bar">
                 <button class="btn btn-secondary" onclick="startTopics()">← Tópicos</button>
                 <button class="btn btn-primary" onclick="startChat()">💬 Perguntar</button>
