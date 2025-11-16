@@ -123,13 +123,13 @@ async function startTopics() {
     contentArea.innerHTML = `
         <div class="loading-screen">
             <div class="loading"></div>
-            <p>Carregando tópicos...</p>
+            <p>Carregando tópicos de ${currentSubject}...</p>
         </div>
     `;
 
     try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
 
         const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
@@ -137,36 +137,179 @@ async function startTopics() {
             body: JSON.stringify({
                 subject: currentSubject,
                 study_mode: 'list_topics',
-                question: `Liste 8 tópicos de ${currentSubject} para 3º ano`
+                question: `Liste 8 tópicos principais de ${currentSubject} para aluno do 3º ano fundamental. Use formato: 1. Nome do Tópico`
             }),
             signal: controller.signal
         });
 
         clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
         const data = await response.json();
-        const topics = extractTopics(data.answer || '');
+        console.log('📦 Resposta completa da API:', JSON.stringify(data, null, 2));
+
+        const answerText = data.answer || data.response || data.output || '';
+        console.log('📝 Texto da resposta:', answerText);
+
+        const topics = extractTopics(answerText);
         renderTopicsList(topics);
+
     } catch (error) {
-        console.error('Erro:', error);
-        renderTopicsList(extractTopics(''));
+        console.error('❌ Erro ao carregar tópicos:', error.message);
+        console.log('🔄 Usando tópicos padrão...');
+        const topics = getFallbackTopics();
+        renderTopicsList(topics);
     }
 }
 
 function extractTopics(text) {
-    const lines = text.split('\n').filter(l => /^[\d•\-\*]/.test(l.trim()) && l.length > 3);
-    if (lines.length > 0) {
-        return lines.map(l => l.replace(/^[\d•\-\*\.\)]+\s*/, '').trim()).slice(0, 8);
+    console.log('🔍 DEBUG - Texto recebido:', text);
+    console.log('🔍 DEBUG - Tamanho do texto:', text.length);
+
+    if (!text || text.trim().length === 0) {
+        console.warn('⚠️ Texto vazio, usando fallback');
+        return getFallbackTopics();
     }
 
+    // Remove formatação markdown
+    text = text.replace(/\*\*/g, '').replace(/\*/g, '').trim();
+
+    // MÉTODO 1: Extrai linhas numeradas (1., 1), 1-, etc)
+    const patterns = [
+        /^\d+[\.\)]\s*(.+)$/gm,           // 1. Tópico ou 1) Tópico
+        /^[\d]+[\.\-\)]\s*\*\*(.+)\*\*$/gm, // 1. **Tópico**
+        /^•\s*(.+)$/gm,                    // • Tópico
+        /^-\s*(.+)$/gm,                    // - Tópico
+        /^\*\s*(.+)$/gm                    // * Tópico
+    ];
+
+    for (let pattern of patterns) {
+        const matches = [...text.matchAll(pattern)];
+        if (matches.length >= 4) {
+            const topics = matches
+                .map(m => m[1].trim())
+                .filter(t => t.length > 3 && t.length < 150)
+                .filter(t => !t.toLowerCase().includes('aqui está'))
+                .filter(t => !t.toLowerCase().includes('tópico'))
+                .slice(0, 8);
+
+            if (topics.length >= 4) {
+                console.log('✅ Tópicos extraídos com padrão:', pattern.source);
+                console.log('✅ Tópicos encontrados:', topics);
+                return topics;
+            }
+        }
+    }
+
+    // MÉTODO 2: Extrai por quebras de linha (quando não tem numeração)
+    const lines = text.split('\n')
+        .map(l => l.trim())
+        .filter(l => l.length > 5 && l.length < 150)
+        .filter(l => !l.toLowerCase().includes('lista'))
+        .filter(l => !l.toLowerCase().includes('tópico'))
+        .filter(l => !l.toLowerCase().includes('escolha'))
+        .filter(l => !/^(aqui|segue|confira|veja)/i.test(l))
+        .slice(0, 8);
+
+    if (lines.length >= 4) {
+        console.log('✅ Tópicos extraídos por linhas:', lines);
+        return lines;
+    }
+
+    // MÉTODO 3: Fallback
+    console.warn('⚠️ Nenhum padrão detectado, usando fallback para:', currentSubject);
+    return getFallbackTopics();
+}
+
+function getFallbackTopics() {
     const defaults = {
-        'Matemática': ['Números Naturais', 'Adição e Subtração', 'Multiplicação', 'Divisão', 'Sistema Monetário', 'Geometria', 'Medidas', 'Gráficos'],
-        'Português': ['Interpretação', 'Sinônimos', 'Substantivos', 'Artigos', 'Adjetivos', 'Numerais', 'Pronomes', 'Verbos'],
-        'Ciências': ['Materiais', 'Propriedades', 'Invenções', 'Reciclagem', 'Experimentos', 'Corpo Humano', 'Animais', 'Plantas']
+        'Matemática': [
+            'Números Naturais e Operações',
+            'Adição e Subtração',
+            'Multiplicação e Divisão',
+            'Sistema Monetário Brasileiro',
+            'Geometria Básica',
+            'Medidas de Comprimento',
+            'Frações Simples',
+            'Gráficos e Tabelas'
+        ],
+        'Português': [
+            'Interpretação de Texto',
+            'Sinônimos e Antônimos',
+            'Substantivos e Classificação',
+            'Artigos Definidos e Indefinidos',
+            'Adjetivos e Concordância',
+            'Numerais',
+            'Pronomes Pessoais',
+            'Verbos no Modo Indicativo',
+            'Análise Sintática',
+            'Produção de Texto'
+        ],
+        'Ciências': [
+            'Materiais e Propriedades',
+            'Estados da Matéria',
+            'Invenções e Tecnologia',
+            'Reciclagem e Meio Ambiente',
+            'Corpo Humano e Saúde',
+            'Animais Vertebrados',
+            'Plantas e Fotossíntese',
+            'Ciclo da Água'
+        ],
+        'História': [
+            'História de Fortaleza',
+            'Primeiros Habitantes do Ceará',
+            'Colonização Portuguesa',
+            'Cultura e Tradições Locais',
+            'Lazer e Turismo',
+            'Monumentos Históricos',
+            'Festas Populares',
+            'Personagens Importantes'
+        ],
+        'Geografia': [
+            'Mapas de Fortaleza',
+            'Região Metropolitana',
+            'Relevo do Ceará',
+            'Clima e Vegetação',
+            'Impactos Ambientais no Campo',
+            'Zona Rural e Urbana',
+            'Hidrografia Local',
+            'Atividades Econômicas'
+        ],
+        'Idiomas': [
+            'Greetings (Cumprimentos)',
+            'Numbers (Números)',
+            'Colors (Cores)',
+            'Family Members (Família)',
+            'Animals (Animais)',
+            'Food and Drinks (Comida)',
+            'School Objects (Material Escolar)',
+            'Verb To Be (Ser/Estar)'
+        ]
     };
-    return defaults[currentSubject] || ['Tópico 1', 'Tópico 2', 'Tópico 3', 'Tópico 4'];
+
+    return defaults[currentSubject] || [
+        'Introdução ao Tema',
+        'Conceitos Fundamentais',
+        'Aplicações Práticas',
+        'Exercícios Básicos',
+        'Curiosidades',
+        'Revisão Geral',
+        'Desafios',
+        'Aprofundamento'
+    ];
 }
 
 function renderTopicsList(topics) {
+    console.log('🎨 Renderizando', topics.length, 'tópicos:', topics);
+
+    if (!topics || topics.length === 0) {
+        console.error('❌ Array de tópicos vazio!');
+        topics = getFallbackTopics();
+    }
+
     const html = topics.map((t, i) => `
         <div class="topic-item" tabindex="0" onclick="selectTopic('${t.replace(/'/g, "\\'")}')">
             <div class="topic-number">${i + 1}</div>
@@ -176,13 +319,15 @@ function renderTopicsList(topics) {
 
     contentArea.innerHTML = `
         <div class="content-screen topics-container">
-            <h2>📚 Escolha um tópico:</h2>
+            <h2>📚 Escolha um tópico de ${currentSubject}:</h2>
             <div class="topics-list">${html}</div>
             <div class="action-bar">
                 <button class="btn btn-secondary" onclick="showActivityHub()">← Voltar</button>
             </div>
         </div>
     `;
+
+    setTimeout(() => document.querySelector('.topic-item').focus(), 100);
 }
 
 async function selectTopic(topic) {
@@ -353,67 +498,190 @@ async function startQuiz() {
     contentArea.innerHTML = `
         <div class="loading-screen">
             <div class="loading"></div>
-            <p>Preparando quiz...</p>
+            <p>🎯 Preparando quiz de ${currentSubject}...</p>
         </div>
     `;
 
     try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 segundos
+
+        const topicInfo = currentTopic ? ` sobre ${currentTopic}` : '';
 
         const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 subject: currentSubject,
+                topic: currentTopic || '',
                 study_mode: 'quiz',
-                question: `Crie 5 perguntas de múltipla escolha sobre ${currentSubject}`
+                question: `Crie EXATAMENTE 5 perguntas de múltipla escolha${topicInfo} sobre ${currentSubject} para aluno do 3º ano fundamental.
+
+Formato obrigatório para CADA pergunta:
+
+Pergunta 1: [texto da pergunta]?
+a) [opção A]
+b) [opção B]
+c) [opção C]
+d) [opção D]
+Resposta correta: [letra]
+Explicação: [por que está correta]
+
+---
+
+Repita esse formato exato para as 5 perguntas, separando cada uma com "---"`
             }),
             signal: controller.signal
         });
 
         clearTimeout(timeoutId);
-        const data = await response.json();
-        quizQuestions = parseQuizMultiple(data.answer || '');
 
-        if (quizQuestions.length > 0) {
-            renderQuiz();
-        } else throw new Error('Sem perguntas');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('📦 QUIZ - Resposta completa:', JSON.stringify(data, null, 2));
+
+        const answerText = data.answer || data.response || data.output || '';
+        console.log('📝 QUIZ - Texto da resposta:', answerText);
+
+        quizQuestions = parseQuizMultiple(answerText);
+
+        if (quizQuestions.length === 0) {
+            console.warn('⚠️ Nenhuma pergunta válida, usando fallback');
+            throw new Error('Sem perguntas válidas');
+        }
+
+        console.log('✅ Quiz carregado com', quizQuestions.length, 'perguntas');
+        renderQuiz();
+
     } catch (error) {
-        console.error('Erro:', error);
-        quizQuestions = [{
-            question: `Qual matéria estamos estudando?`,
-            options: { a: currentSubject, b: 'Outra', c: 'Não sei', d: 'Talvez' },
-            correct: 'a',
-            explanation: `Estamos estudando ${currentSubject}!`
-        }];
+        console.error('❌ Erro ao gerar quiz:', error);
+        quizQuestions = generateFallbackQuiz();
         renderQuiz();
     }
 }
 
 function parseQuizMultiple(text) {
-    const parts = text.split('---').map(p => p.trim()).filter(p => p);
-    return parts.map(parseQuiz).filter(q => q.question && Object.keys(q.options).length > 0);
+    console.log('🔍 QUIZ DEBUG - Texto recebido:', text);
+    console.log('🔍 QUIZ DEBUG - Tamanho:', text.length);
+
+    if (!text || text.trim().length === 0) {
+        console.warn('⚠️ Texto do quiz vazio!');
+        return [];
+    }
+
+    // Remove formatação markdown
+    text = text.replace(/\*\*/g, '').replace(/\*/g, '');
+
+    // MÉTODO 1: Tenta dividir por separadores comuns
+    let parts = [];
+
+    // Tenta separador ---
+    if (text.includes('---')) {
+        parts = text.split('---').map(p => p.trim()).filter(p => p.length > 20);
+        console.log('✅ Dividido por --- :', parts.length, 'perguntas');
+    }
+
+    // Tenta separador Pergunta X:
+    if (parts.length === 0 && /Pergunta \d+:/gi.test(text)) {
+        parts = text.split(/Pergunta \d+:/gi).map(p => p.trim()).filter(p => p.length > 20);
+        console.log('✅ Dividido por "Pergunta X":', parts.length, 'perguntas');
+    }
+
+    // Tenta separador **Pergunta X**
+    if (parts.length === 0 && /\*\*Pergunta \d+\*\*/gi.test(text)) {
+        parts = text.split(/\*\*Pergunta \d+\*\*/gi).map(p => p.trim()).filter(p => p.length > 20);
+        console.log('✅ Dividido por "**Pergunta X**":', parts.length, 'perguntas');
+    }
+
+    // Tenta números seguidos de ponto no início da linha
+    if (parts.length === 0) {
+        const regex = /(?=^\d+\.\s)/gm;
+        parts = text.split(regex).map(p => p.trim()).filter(p => p.length > 20);
+        console.log('✅ Dividido por números:', parts.length, 'perguntas');
+    }
+
+    // Se ainda não achou nada, trata como pergunta única
+    if (parts.length === 0) {
+        parts = [text];
+        console.log('⚠️ Tratando como pergunta única');
+    }
+
+    const questions = parts.map(parseQuiz).filter(q => {
+        const isValid = q.question && Object.keys(q.options).length >= 2;
+        if (!isValid) {
+            console.warn('❌ Pergunta inválida descartada:', q);
+        }
+        return isValid;
+    });
+
+    console.log('✅ Total de perguntas válidas:', questions.length);
+    return questions;
 }
 
 function parseQuiz(text) {
-    const lines = text.split('\n');
+    console.log('🔍 Parseando pergunta:', text.substring(0, 100) + '...');
+
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
     let question = '', options = {}, correct = '', explanation = '';
 
-    for (let line of lines) {
-        line = line.trim();
-        if (line.startsWith('**Pergunta:**')) {
-            question = line.replace('**Pergunta:**', '').trim();
-        } else if (/^[a-d]\)/.test(line)) {
-            const m = line.match(/^([a-d])\)\s*(.+)$/);
-            if (m) options[m[1]] = m[2];
-        } else if (line.startsWith('**Resposta correta:**')) {
-            correct = line.replace('**Resposta correta:**', '').trim().toLowerCase();
-        } else if (line.startsWith('**Explicação:**')) {
-            explanation = line.replace('**Explicação:**', '').trim();
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Detecta pergunta
+        if (!question && (
+            line.includes('?') ||
+            line.toLowerCase().includes('pergunta') ||
+            /^\d+[\.\)]\s*[A-Z]/.test(line) ||
+            i === 0
+        )) {
+            question = line
+                .replace(/^\d+[\.\)]\s*/, '')
+                .replace(/Pergunta:?/gi, '')
+                .replace(/\*\*/g, '')
+                .trim();
+            continue;
+        }
+
+        // Detecta opções (a), b), c), d) ou A) B) C) D)
+        const optionMatch = line.match(/^([a-dA-D])\s*[\)\.\-\:]\s*(.+)$/);
+        if (optionMatch) {
+            const letter = optionMatch[1].toLowerCase();
+            const text = optionMatch[2].trim();
+            options[letter] = text;
+            continue;
+        }
+
+        // Detecta resposta correta
+        if (line.toLowerCase().includes('resposta') && line.toLowerCase().includes('correta')) {
+            const correctMatch = line.match(/[a-dA-D]/);
+            if (correctMatch) {
+                correct = correctMatch[0].toLowerCase();
+            }
+            continue;
+        }
+
+        // Detecta explicação
+        if (line.toLowerCase().includes('explicação') || line.toLowerCase().includes('porque')) {
+            explanation = line
+                .replace(/Explicação:?/gi, '')
+                .replace(/Porque:?/gi, '')
+                .trim();
         }
     }
-    return { question, options, correct, explanation };
+
+    // Se não achou resposta correta, tenta inferir da primeira opção
+    if (!correct && Object.keys(options).length > 0) {
+        correct = 'a';
+        console.warn('⚠️ Resposta correta não detectada, usando "a" como padrão');
+    }
+
+    const result = { question, options, correct, explanation };
+    console.log('📝 Pergunta parseada:', result);
+
+    return result;
 }
 
 function renderQuiz() {
@@ -474,6 +742,111 @@ function selectQuizOption(selected, correct) {
 function nextQuizQuestion() {
     currentQuizIndex++;
     renderQuiz();
+}
+
+function generateFallbackQuiz() {
+    console.log('🔄 Gerando quiz fallback para:', currentSubject);
+
+    const quizzes = {
+        'Matemática': [
+            {
+                question: 'Quanto é 5 + 3?',
+                options: { a: '7', b: '8', c: '9', d: '10' },
+                correct: 'b',
+                explanation: '5 + 3 = 8'
+            },
+            {
+                question: 'Qual é o resultado de 4 x 2?',
+                options: { a: '6', b: '8', c: '10', d: '12' },
+                correct: 'b',
+                explanation: '4 multiplicado por 2 é igual a 8'
+            },
+            {
+                question: 'Quanto é 10 - 6?',
+                options: { a: '3', b: '4', c: '5', d: '6' },
+                correct: 'b',
+                explanation: '10 menos 6 é igual a 4'
+            },
+            {
+                question: 'Qual forma geométrica tem 3 lados?',
+                options: { a: 'Quadrado', b: 'Círculo', c: 'Triângulo', d: 'Retângulo' },
+                correct: 'c',
+                explanation: 'O triângulo tem exatamente 3 lados'
+            },
+            {
+                question: 'Quanto é 12 ÷ 3?',
+                options: { a: '2', b: '3', c: '4', d: '5' },
+                correct: 'c',
+                explanation: '12 dividido por 3 é igual a 4'
+            }
+        ],
+        'Português': [
+            {
+                question: 'Qual palavra é um substantivo?',
+                options: { a: 'Correr', b: 'Casa', c: 'Bonito', d: 'Rapidamente' },
+                correct: 'b',
+                explanation: 'Casa é um substantivo (nome de coisa)'
+            },
+            {
+                question: 'Qual é o sinônimo de "feliz"?',
+                options: { a: 'Triste', b: 'Alegre', c: 'Bravo', d: 'Cansado' },
+                correct: 'b',
+                explanation: 'Alegre tem o mesmo significado de feliz'
+            },
+            {
+                question: 'Quantas vogais tem no alfabeto português?',
+                options: { a: '3', b: '4', c: '5', d: '6' },
+                correct: 'c',
+                explanation: 'São 5 vogais: A, E, I, O, U'
+            },
+            {
+                question: 'Qual frase está correta?',
+                options: { a: 'O menino correu', b: 'O menino correram', c: 'Os menino correu', d: 'Os meninos corre' },
+                correct: 'a',
+                explanation: 'Sujeito e verbo devem concordar em número'
+            },
+            {
+                question: 'Qual é o plural de "animal"?',
+                options: { a: 'Animais', b: 'Animales', c: 'Animalos', d: 'Animaes' },
+                correct: 'a',
+                explanation: 'O plural correto é "animais"'
+            }
+        ],
+        'Ciências': [
+            {
+                question: 'O que as plantas fazem com a luz do sol?',
+                options: { a: 'Dormem', b: 'Fotossíntese', c: 'Respiram', d: 'Crescem' },
+                correct: 'b',
+                explanation: 'As plantas fazem fotossíntese usando luz solar'
+            },
+            {
+                question: 'Quantos estados físicos tem a água?',
+                options: { a: '1', b: '2', c: '3', d: '4' },
+                correct: 'c',
+                explanation: 'Sólido (gelo), líquido (água) e gasoso (vapor)'
+            },
+            {
+                question: 'Qual órgão bombeia o sangue no corpo?',
+                options: { a: 'Pulmão', b: 'Cérebro', c: 'Coração', d: 'Estômago' },
+                correct: 'c',
+                explanation: 'O coração é responsável por bombear o sangue'
+            },
+            {
+                question: 'O que reciclamos para proteger o meio ambiente?',
+                options: { a: 'Comida', b: 'Lixo', c: 'Ar', d: 'Luz' },
+                correct: 'b',
+                explanation: 'Reciclar lixo ajuda a proteger a natureza'
+            },
+            {
+                question: 'Qual animal é um mamífero?',
+                options: { a: 'Peixe', b: 'Cachorro', c: 'Pássaro', d: 'Cobra' },
+                correct: 'b',
+                explanation: 'Cachorro é um mamífero (mama quando filhote)'
+            }
+        ]
+    };
+
+    return quizzes[currentSubject] || quizzes['Matemática'];
 }
 
 function showFinalScore() {
