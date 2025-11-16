@@ -29,10 +29,8 @@ LearnAI TV transforma qualquer dispositivo com navegador em um tutor inteligente
 ```
 learnai-tv/
 ├── index.html                 # Página principal
-├── css/
-│   └── style.css             # Estilos da aplicação
-├── js/
-│   └── script.js             # Lógica da aplicação
+├── app.js                     # Lógica completa da aplicação
+├── styles.css                 # Estilos da aplicação
 ├── package.json              # Dependências Node.js
 ├── .env                      # Configurações (não versionado)
 ├── .env.example              # Exemplo de configurações
@@ -90,7 +88,7 @@ npm install
 
 ### API Integration
 A aplicação se conecta a um webhook n8n que integra com Claude API:
-- **Endpoint**: Configurado em `js/script.js`
+- **Endpoint**: Configurado em `app.js`
 - **Métodos suportados**:
   - `list_topics`: Lista tópicos de uma matéria
   - `explicacao`: Explica um tópico específico
