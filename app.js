@@ -780,6 +780,13 @@ function parseQuiz(text) {
         const line = lines[i];
         console.log(`  Linha ${i}: "${line.substring(0, 60)}..."`);
 
+        // FILTRO: Ignora linhas introdutórias e saudações
+        const isIntroLine = /^(aqui|olá|oi|bem-vindo|vamos|segue|confira|tudo no formato|benjamim)/gi.test(line);
+        if (isIntroLine && !line.includes('?')) {
+            console.log(`  ⊗ Ignorada (introdução): "${line.substring(0, 40)}..."`);
+            continue;
+        }
+
         // CASO 1: Linha contém "Pergunta:" seguido do texto (mesma linha ou próxima)
         if (!question && /^Pergunta\s*\d*\s*:/gi.test(line)) {
             console.log('  ✓ Detectado label "Pergunta:"');
@@ -798,20 +805,13 @@ function parseQuiz(text) {
             continue;
         }
 
-        // CASO 2: Primeira linha com '?' é a pergunta
-        if (!question && line.includes('?')) {
+        // CASO 2: Linha com '?' é a pergunta (mas NÃO se for introdução)
+        if (!question && line.includes('?') && !isIntroLine) {
             question = line
                 .replace(/^\d+[\.\)]\s*/, '')
                 .replace(/\*\*/g, '')
                 .trim();
             console.log(`  ✓ Pergunta detectada por '?': "${question}"`);
-            continue;
-        }
-
-        // CASO 3: Primeira linha não-opção é a pergunta
-        if (!question && i === 0 && !line.match(/^([a-dA-D])\s*[\)\.\-\:]/)) {
-            question = line.replace(/^\d+[\.\)]\s*/, '').replace(/\*\*/g, '').trim();
-            console.log(`  ✓ Primeira linha como pergunta: "${question}"`);
             continue;
         }
 
