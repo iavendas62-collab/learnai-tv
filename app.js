@@ -1146,6 +1146,10 @@ function showFinalScore() {
         <div class="quiz-question">
             <h2>🎉 Quiz Finalizado!</h2>
             <p style="font-size: 2rem;">Pontuação: ${quizScore}/${quizQuestions.length}</p>
+            <p style="font-size: 1.4rem; color: #6b7280; margin-top: 20px;">
+                👨‍👩‍👧‍👦 Faça junto com sua família!<br>
+                Parabéns pelo esforço, continue firme! ⏳👏✨
+            </p>
             <div class="action-bar">
                 <button class="btn btn-secondary" onclick="showActivityHub()">← Voltar</button>
                 <button class="btn btn-primary" onclick="startQuiz()">🔄 Refazer</button>
