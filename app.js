@@ -712,10 +712,89 @@ function parseQuiz(text) {
         explanation = 'Explicação indisponível';
     }
 
+    // VALIDAÇÃO INTELIGENTE: Corrige resposta se a explicação menciona outra opção
+    const validatedCorrect = validateCorrectAnswer(options, correct, explanation);
+    if (validatedCorrect !== correct) {
+        console.warn(`🔧 CORREÇÃO AUTOMÁTICA: Resposta alterada de '${correct}' para '${validatedCorrect}' baseado na explicação`);
+        correct = validatedCorrect;
+    }
+
     const result = { question, options, correct, explanation };
     console.log('📝 Resultado final:', JSON.stringify(result, null, 2));
 
     return result;
+}
+
+function validateCorrectAnswer(options, declaredCorrect, explanation) {
+    console.log('🔍 Validando resposta correta...');
+    
+    // Se não tem explicação, mantém a resposta declarada
+    if (!explanation || explanation === 'Explicação indisponível') {
+        return declaredCorrect;
+    }
+
+    // Extrai números, valores monetários e textos importantes da explicação
+    const expLower = explanation.toLowerCase();
+    
+    // Para cada opção, verifica se o texto/valor aparece na explicação
+    let bestMatch = declaredCorrect;
+    let highestScore = 0;
+
+    for (const [letter, optionText] of Object.entries(options)) {
+        let score = 0;
+        const optLower = optionText.toLowerCase();
+        
+        // Remove símbolos para comparação
+        const cleanOpt = optLower.replace(/[r\$\s\.,]/g, '');
+        const cleanExp = expLower.replace(/[r\$\s\.,]/g, '');
+        
+        // Se o valor exato da opção aparece na explicação
+        if (cleanExp.includes(cleanOpt) && cleanOpt.length > 1) {
+            score += 10;
+            console.log(`  ✓ Opção ${letter} ("${optionText}") encontrada na explicação (score +10)`);
+        }
+
+        // Extrai números da opção e explicação
+        const optNumbers = optionText.match(/\d+/g) || [];
+        const expNumbers = explanation.match(/\d+/g) || [];
+        
+        // Verifica se algum número da opção aparece na explicação
+        for (const num of optNumbers) {
+            if (expNumbers.includes(num)) {
+                score += 5;
+                console.log(`  ✓ Número "${num}" da opção ${letter} aparece na explicação (score +5)`);
+            }
+        }
+
+        // Se a explicação menciona especificamente esta letra
+        const letterPatterns = [
+            new RegExp(`\\b${letter}\\)`, 'i'),
+            new RegExp(`opção\\s+${letter}`, 'i'),
+            new RegExp(`alternativa\\s+${letter}`, 'i'),
+            new RegExp(`letra\\s+${letter}`, 'i')
+        ];
+        
+        for (const pattern of letterPatterns) {
+            if (pattern.test(explanation)) {
+                score += 20;
+                console.log(`  ✓ Letra ${letter} mencionada explicitamente (score +20)`);
+                break;
+            }
+        }
+
+        if (score > highestScore) {
+            highestScore = score;
+            bestMatch = letter;
+        }
+    }
+
+    if (bestMatch !== declaredCorrect && highestScore > 0) {
+        console.log(`🔧 Resposta corrigida: '${declaredCorrect}' → '${bestMatch}' (score: ${highestScore})`);
+        return bestMatch;
+    }
+
+    console.log(`✓ Resposta '${declaredCorrect}' validada (score: ${highestScore})`);
+    return declaredCorrect;
 }
 
 function renderQuiz() {
