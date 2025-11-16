@@ -622,35 +622,57 @@ function parseQuizMultiple(text) {
 }
 
 function parseQuiz(text) {
-    console.log('🔍 Parseando pergunta:', text.substring(0, 100) + '...');
+    console.log('🔍 Parseando pergunta:', text.substring(0, 150) + '...');
 
     const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
     let question = '', options = {}, correct = '', explanation = '';
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
+        console.log(`  Linha ${i}: "${line.substring(0, 60)}..."`);
 
-        // Detecta pergunta
-        if (!question && (
-            line.includes('?') ||
-            line.toLowerCase().includes('pergunta') ||
-            /^\d+[\.\)]\s*[A-Z]/.test(line) ||
-            i === 0
-        )) {
-            question = line
-                .replace(/^\d+[\.\)]\s*/, '')
-                .replace(/Pergunta:?/gi, '')
-                .replace(/\*\*/g, '')
-                .trim();
+        // CASO 1: Linha contém "Pergunta:" seguido do texto (mesma linha ou próxima)
+        if (!question && /^Pergunta\s*\d*\s*:/gi.test(line)) {
+            console.log('  ✓ Detectado label "Pergunta:"');
+            const afterColon = line.split(':').slice(1).join(':').trim();
+            if (afterColon && afterColon.length > 3) {
+                question = afterColon;
+                console.log(`  ✓ Pergunta extraída (mesma linha): "${question}"`);
+            } else if (i + 1 < lines.length) {
+                const nextLine = lines[i + 1];
+                if (!nextLine.match(/^([a-dA-D])\s*[\)\.\-\:]/)) {
+                    question = nextLine;
+                    i++; // Pula a próxima
+                    console.log(`  ✓ Pergunta extraída (próxima linha): "${question}"`);
+                }
+            }
             continue;
         }
 
-        // Detecta opções (a), b), c), d) ou A) B) C) D)
+        // CASO 2: Primeira linha com '?' é a pergunta
+        if (!question && line.includes('?')) {
+            question = line
+                .replace(/^\d+[\.\)]\s*/, '')
+                .replace(/\*\*/g, '')
+                .trim();
+            console.log(`  ✓ Pergunta detectada por '?': "${question}"`);
+            continue;
+        }
+
+        // CASO 3: Primeira linha não-opção é a pergunta
+        if (!question && i === 0 && !line.match(/^([a-dA-D])\s*[\)\.\-\:]/)) {
+            question = line.replace(/^\d+[\.\)]\s*/, '').replace(/\*\*/g, '').trim();
+            console.log(`  ✓ Primeira linha como pergunta: "${question}"`);
+            continue;
+        }
+
+        // Detecta opções
         const optionMatch = line.match(/^([a-dA-D])\s*[\)\.\-\:]\s*(.+)$/);
         if (optionMatch) {
             const letter = optionMatch[1].toLowerCase();
             const text = optionMatch[2].trim();
             options[letter] = text;
+            console.log(`  ✓ Opção ${letter}: "${text.substring(0, 40)}..."`);
             continue;
         }
 
@@ -659,27 +681,39 @@ function parseQuiz(text) {
             const correctMatch = line.match(/[a-dA-D]/);
             if (correctMatch) {
                 correct = correctMatch[0].toLowerCase();
+                console.log(`  ✓ Resposta correta: ${correct}`);
             }
             continue;
         }
 
         // Detecta explicação
-        if (line.toLowerCase().includes('explicação') || line.toLowerCase().includes('porque')) {
+        if (line.toLowerCase().includes('explicação') || line.toLowerCase().includes('explicacao') || line.toLowerCase().includes('porque')) {
             explanation = line
                 .replace(/Explicação:?/gi, '')
+                .replace(/Explicacao:?/gi, '')
                 .replace(/Porque:?/gi, '')
                 .trim();
+            console.log(`  ✓ Explicação: "${explanation.substring(0, 40)}..."`);
         }
     }
 
-    // Se não achou resposta correta, tenta inferir da primeira opção
+    // Fallbacks
     if (!correct && Object.keys(options).length > 0) {
         correct = 'a';
-        console.warn('⚠️ Resposta correta não detectada, usando "a" como padrão');
+        console.warn('⚠️ Resposta correta não detectada, usando "a"');
+    }
+
+    if (!question || question.trim().length === 0) {
+        question = 'Pergunta não encontrada - verifique o formato';
+        console.error('❌ ERRO: Pergunta vazia!');
+    }
+
+    if (!explanation) {
+        explanation = 'Explicação indisponível';
     }
 
     const result = { question, options, correct, explanation };
-    console.log('📝 Pergunta parseada:', result);
+    console.log('📝 Resultado final:', JSON.stringify(result, null, 2));
 
     return result;
 }
