@@ -901,7 +901,16 @@ async function startChallenge() {
             body: JSON.stringify({
                 subject: currentSubject,
                 study_mode: 'challenge',
-                question: `Crie 1 pergunta desafiadora sobre ${currentSubject}`
+                question: `Crie uma pergunta de múltipla escolha desafiadora sobre ${currentSubject} para aluno do 3º ano fundamental.
+
+Formato obrigatório:
+Pergunta: [texto da pergunta]?
+a) [opção A]
+b) [opção B]
+c) [opção C]
+d) [opção D]
+Resposta correta: [letra]
+Explicação: [breve explicação]`
             })
         });
 
@@ -921,8 +930,11 @@ async function startChallenge() {
 }
 
 function renderChallenge(c) {
+    console.log('🎲 RENDER CHALLENGE DEBUG - Challenge:', c);
+    console.log('🎲 RENDER CHALLENGE DEBUG - Resposta correta detectada:', c.correct);
+
     const opts = Object.keys(c.options).map(l => `
-        <button class="quiz-option" data-letter="${l}" onclick="selectChallengeOption('${l}', '${c.correct}', '${c.explanation.replace(/'/g, "\\'")}')">
+        <button class="quiz-option" data-letter="${l.toLowerCase()}" onclick="selectChallengeOption('${l.toLowerCase()}', '${c.correct}', '${c.explanation.replace(/'/g, "\\'")}')">
             ${l}) ${c.options[l]}
         </button>
     `).join('');
@@ -937,15 +949,34 @@ function renderChallenge(c) {
 }
 
 function selectChallengeOption(selected, correct, explanation) {
-    if (selected === correct) addPoints(15);
+    console.log('🎲 CHALLENGE DEBUG - Selecionada:', selected, 'Correta:', correct);
+    console.log('🎲 CHALLENGE DEBUG - Tipo selecionada:', typeof selected, 'Tipo correta:', typeof correct);
+
+    // Converte para minúsculo para garantir comparação
+    selected = selected.toLowerCase();
+    correct = correct.toLowerCase();
+
+    console.log('🎲 CHALLENGE DEBUG - Após normalização - Selecionada:', selected, 'Correta:', correct);
+
+    const isCorrect = selected === correct;
+    console.log('🎲 CHALLENGE DEBUG - É correta?', isCorrect);
+
+    if (isCorrect) {
+        addPoints(15);
+        console.log('✅ CHALLENGE - Resposta CORRETA!');
+    } else {
+        console.log('❌ CHALLENGE - Resposta ERRADA! Resposta correta:', correct.toUpperCase());
+    }
 
     const options = document.querySelectorAll('.quiz-option');
     options.forEach(opt => {
         opt.disabled = true;
-        if (opt.dataset.letter === correct) {
+        const l = opt.dataset.letter;
+        console.log('🎲 CHALLENGE DEBUG - Checking option:', l, 'vs correct:', correct);
+        if (l === correct) {
             opt.style.background = 'rgba(16, 185, 129, 0.3)';
             opt.style.borderColor = '#10b981';
-        } else if (opt.dataset.letter === selected && selected !== correct) {
+        } else if (l === selected && selected !== correct) {
             opt.style.background = 'rgba(239, 68, 68, 0.3)';
             opt.style.borderColor = '#ef4444';
         }
