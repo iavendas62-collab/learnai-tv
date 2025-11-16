@@ -716,12 +716,9 @@ function parseQuiz(text) {
         explanation = 'Explicação indisponível';
     }
 
-    // VALIDAÇÃO INTELIGENTE: Corrige resposta se a explicação menciona outra opção
-    const validatedCorrect = validateCorrectAnswer(options, correct, explanation);
-    if (validatedCorrect !== correct) {
-        console.warn(`🔧 CORREÇÃO AUTOMÁTICA: Resposta alterada de '${correct}' para '${validatedCorrect}' baseado na explicação`);
-        correct = validatedCorrect;
-    }
+    // VALIDAÇÃO INTELIGENTE: Desabilitada temporariamente - causava mais problemas
+    // A detecção da resposta correta já funciona corretamente agora
+    console.log(`✅ Usando resposta declarada: '${correct}'`);
 
     const result = { question, options, correct, explanation };
     console.log('📝 Resultado final:', JSON.stringify(result, null, 2));
@@ -737,27 +734,32 @@ function validateCorrectAnswer(options, declaredCorrect, explanation) {
         return declaredCorrect;
     }
 
-    // Extrai números, valores monetários e textos importantes da explicação
     const expLower = explanation.toLowerCase();
     
-    // Para cada opção, verifica se o texto/valor aparece na explicação
+    // Pega os primeiros 100 caracteres da explicação (parte mais importante)
+    const expStart = expLower.substring(0, 100);
+    
     let bestMatch = declaredCorrect;
     let highestScore = 0;
+    let declaredScore = 0;
 
     for (const [letter, optionText] of Object.entries(options)) {
         let score = 0;
         const optLower = optionText.toLowerCase();
         
-        // Remove símbolos para comparação
-        const cleanOpt = optLower.replace(/[r\$\s\.,]/g, '');
-        const cleanExp = expLower.replace(/[r\$\s\.,]/g, '');
-        
-        // Se o valor exato da opção aparece na explicação
-        if (cleanExp.includes(cleanOpt) && cleanOpt.length > 1) {
-            score += 10;
-            console.log(`  ✓ Opção ${letter} ("${optionText}") encontrada na explicação (score +10)`);
+        // SCORE POR POSIÇÃO: Opção que aparece no INÍCIO da explicação ganha mais pontos
+        const positionInExp = expLower.indexOf(optLower);
+        if (positionInExp >= 0 && positionInExp < 50) {
+            score += 30; // Aparece nos primeiros 50 caracteres
+            console.log(`  ✓ Opção ${letter} ("${optionText}") no INÍCIO da explicação (score +30)`);
+        } else if (positionInExp >= 50 && positionInExp < 100) {
+            score += 15; // Aparece entre 50-100 caracteres
+            console.log(`  ✓ Opção ${letter} ("${optionText}") na explicação (score +15)`);
+        } else if (positionInExp >= 100) {
+            score += 5; // Aparece depois, menos relevante
+            console.log(`  ✓ Opção ${letter} ("${optionText}") no final da explicação (score +5)`);
         }
-
+        
         // Extrai números da opção e explicação
         const optNumbers = optionText.match(/\d+/g) || [];
         const expNumbers = explanation.match(/\d+/g) || [];
@@ -765,8 +767,8 @@ function validateCorrectAnswer(options, declaredCorrect, explanation) {
         // Verifica se algum número da opção aparece na explicação
         for (const num of optNumbers) {
             if (expNumbers.includes(num)) {
-                score += 5;
-                console.log(`  ✓ Número "${num}" da opção ${letter} aparece na explicação (score +5)`);
+                score += 20;
+                console.log(`  ✓ Número "${num}" da opção ${letter} aparece na explicação (score +20)`);
             }
         }
 
@@ -780,10 +782,15 @@ function validateCorrectAnswer(options, declaredCorrect, explanation) {
         
         for (const pattern of letterPatterns) {
             if (pattern.test(explanation)) {
-                score += 20;
-                console.log(`  ✓ Letra ${letter} mencionada explicitamente (score +20)`);
+                score += 40;
+                console.log(`  ✓ Letra ${letter} mencionada explicitamente (score +40)`);
                 break;
             }
+        }
+
+        // Guarda o score da resposta declarada
+        if (letter === declaredCorrect) {
+            declaredScore = score;
         }
 
         if (score > highestScore) {
@@ -792,12 +799,13 @@ function validateCorrectAnswer(options, declaredCorrect, explanation) {
         }
     }
 
-    if (bestMatch !== declaredCorrect && highestScore > 0) {
-        console.log(`🔧 Resposta corrigida: '${declaredCorrect}' → '${bestMatch}' (score: ${highestScore})`);
+    // SÓ corrige se a diferença for SIGNIFICATIVA (pelo menos 15 pontos)
+    if (bestMatch !== declaredCorrect && (highestScore - declaredScore) >= 15) {
+        console.log(`🔧 Resposta corrigida: '${declaredCorrect}' (score ${declaredScore}) → '${bestMatch}' (score ${highestScore})`);
         return bestMatch;
     }
 
-    console.log(`✓ Resposta '${declaredCorrect}' validada (score: ${highestScore})`);
+    console.log(`✓ Resposta '${declaredCorrect}' mantida (score: ${declaredScore}, melhor: ${highestScore})`);
     return declaredCorrect;
 }
 
