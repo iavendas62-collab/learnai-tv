@@ -691,8 +691,11 @@ function renderQuiz() {
     }
 
     const q = quizQuestions[currentQuizIndex];
+    console.log('🎯 RENDER QUIZ DEBUG - Pergunta atual:', currentQuizIndex, q);
+    console.log('🎯 RENDER QUIZ DEBUG - Resposta correta detectada:', q.correct);
+
     const opts = Object.keys(q.options).map(l => `
-        <button class="quiz-option" data-letter="${l}" onclick="selectQuizOption('${l}', '${q.correct}')">
+        <button class="quiz-option" data-letter="${l.toLowerCase()}" onclick="selectQuizOption('${l.toLowerCase()}', '${q.correct}')">
             ${l}) ${q.options[l]}
         </button>
     `).join('');
@@ -707,9 +710,24 @@ function renderQuiz() {
 }
 
 function selectQuizOption(selected, correct) {
-    if (selected === correct) {
+    console.log('🎯 QUIZ DEBUG - Selecionada:', selected, 'Correta:', correct);
+    console.log('🎯 QUIZ DEBUG - Tipo selecionada:', typeof selected, 'Tipo correta:', typeof correct);
+
+    // Converte para minúsculo para garantir comparação
+    selected = selected.toLowerCase();
+    correct = correct.toLowerCase();
+
+    console.log('🎯 QUIZ DEBUG - Após normalização - Selecionada:', selected, 'Correta:', correct);
+
+    const isCorrect = selected === correct;
+    console.log('🎯 QUIZ DEBUG - É correta?', isCorrect);
+
+    if (isCorrect) {
         quizScore++;
         addPoints(10);
+        console.log('✅ QUIZ - Resposta CORRETA! Score:', quizScore);
+    } else {
+        console.log('❌ QUIZ - Resposta ERRADA!');
     }
 
     const options = document.querySelectorAll('.quiz-option');
