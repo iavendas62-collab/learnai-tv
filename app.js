@@ -1050,8 +1050,11 @@ function renderChallenge(c) {
     console.log('🎲 RENDER CHALLENGE DEBUG - Challenge:', c);
     console.log('🎲 RENDER CHALLENGE DEBUG - Resposta correta detectada:', c.correct);
 
+    // Escapa tanto aspas simples quanto duplas na explicação
+    const safeExplanation = c.explanation.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
     const opts = Object.keys(c.options).map(l => `
-        <button class="quiz-option" data-letter="${l.toLowerCase()}" onclick="selectChallengeOption('${l.toLowerCase()}', '${c.correct}', '${c.explanation.replace(/'/g, "\\'")}')">
+        <button class="quiz-option" data-letter="${l.toLowerCase()}" onclick="selectChallengeOption('${l.toLowerCase()}', '${c.correct}', '${safeExplanation}')">
             ${l}) ${c.options[l]}
         </button>
     `).join('');
