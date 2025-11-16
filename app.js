@@ -364,8 +364,8 @@ function renderTopicContent(topic, content) {
     contentArea.innerHTML = `
         <div class="content-screen">
             <h2>📖 ${topic}</h2>
-            <div style="font-size: 1.6rem; line-height: 1.8;">
-                ${content.replace(/\n/g, '<br><br>')}
+            <div style="font-size: 1.6rem; line-height: 1.8; max-width: 900px; margin: 0 auto;">
+                ${content.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>')}
             </div>
             <div class="action-bar">
                 <button class="btn btn-secondary" onclick="startTopics()">← Tópicos</button>
