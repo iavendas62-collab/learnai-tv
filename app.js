@@ -361,12 +361,25 @@ async function selectTopic(topic) {
 }
 
 function renderTopicContent(topic, content) {
+    // Adiciona formas geométricas visuais no texto
+    content = addGeometricShapes(content);
+    
+    // Verifica se há menção de atividade interativa
+    const hasInteractiveCall = /desenhar|desenhe|vamos (fazer|criar|desenhar)|pratique|faça você/gi.test(content);
+    
+    const interactiveButton = hasInteractiveCall ? `
+        <button class="btn" style="background: linear-gradient(45deg, #ff6b35, #f7931e); color: white; margin-top: 20px;" onclick="openDrawingCanvas()">
+            🎨 Vamos Desenhar Juntos!
+        </button>
+    ` : '';
+    
     contentArea.innerHTML = `
         <div class="content-screen">
             <h2>📖 ${topic}</h2>
             <div style="font-size: 1.6rem; line-height: 1.8; max-width: 900px; margin: 0 auto;">
                 ${content.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>')}
             </div>
+            ${interactiveButton}
             <div class="action-bar">
                 <button class="btn btn-secondary" onclick="startTopics()">← Tópicos</button>
                 <button class="btn btn-primary" onclick="startChat()">💬 Perguntar</button>
@@ -374,6 +387,143 @@ function renderTopicContent(topic, content) {
             </div>
         </div>
     `;
+}
+
+function addGeometricShapes(text) {
+    // Mapeia palavras-chave para formas visuais SVG ou Unicode
+    const shapes = {
+        'círculo': '<span style="display: inline-block; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(45deg, #3b82f6, #2563eb); vertical-align: middle; margin: 0 5px;"></span>',
+        'circulo': '<span style="display: inline-block; width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(45deg, #3b82f6, #2563eb); vertical-align: middle; margin: 0 5px;"></span>',
+        'quadrado': '<span style="display: inline-block; width: 30px; height: 30px; background: linear-gradient(45deg, #10b981, #059669); vertical-align: middle; margin: 0 5px;"></span>',
+        'triângulo': '<span style="display: inline-block; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 26px solid #f59e0b; vertical-align: middle; margin: 0 5px;"></span>',
+        'triangulo': '<span style="display: inline-block; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 26px solid #f59e0b; vertical-align: middle; margin: 0 5px;"></span>',
+        'retângulo': '<span style="display: inline-block; width: 40px; height: 25px; background: linear-gradient(45deg, #8b5cf6, #7c3aed); vertical-align: middle; margin: 0 5px;"></span>',
+        'retangulo': '<span style="display: inline-block; width: 40px; height: 25px; background: linear-gradient(45deg, #8b5cf6, #7c3aed); vertical-align: middle; margin: 0 5px;"></span>'
+    };
+    
+    // Adiciona formas após mencionar a palavra
+    for (const [word, shape] of Object.entries(shapes)) {
+        const regex = new RegExp(`\\b${word}\\b`, 'gi');
+        text = text.replace(regex, match => `${match} ${shape}`);
+    }
+    
+    return text;
+}
+
+function openDrawingCanvas() {
+    contentArea.innerHTML = `
+        <div class="content-screen">
+            <h2>🎨 Vamos Desenhar Juntos!</h2>
+            <p style="font-size: 1.4rem; margin-bottom: 20px;">Use o mouse ou dedo para desenhar!</p>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <canvas id="drawing-canvas" 
+                    style="border: 4px solid #3b82f6; border-radius: 20px; cursor: crosshair; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.2);"
+                    width="700" 
+                    height="500">
+                </canvas>
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="changeColor('#000000')">⚫ Preto</button>
+                <button class="btn btn-primary" onclick="changeColor('#3b82f6')">🔵 Azul</button>
+                <button class="btn btn-primary" onclick="changeColor('#ef4444')">🔴 Vermelho</button>
+                <button class="btn btn-primary" onclick="changeColor('#10b981')">🟢 Verde</button>
+                <button class="btn btn-primary" onclick="changeColor('#f59e0b')">🟡 Amarelo</button>
+                <button class="btn btn-primary" onclick="changeColor('#8b5cf6')">🟣 Roxo</button>
+                <button class="btn btn-success" onclick="clearCanvas()">🗑️ Limpar</button>
+            </div>
+            
+            <div class="action-bar">
+                <button class="btn btn-secondary" onclick="backToTopic()">← Voltar ao Tópico</button>
+            </div>
+        </div>
+    `;
+    
+    initializeCanvas();
+}
+
+let drawing = false;
+let currentColor = '#000000';
+let ctx = null;
+
+function initializeCanvas() {
+    const canvas = document.getElementById('drawing-canvas');
+    ctx = canvas.getContext('2d');
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = currentColor;
+    
+    // Mouse events
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+    
+    // Touch events para mobile
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent('mousedown', {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
+    });
+    
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent('mousemove', {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
+    });
+    
+    canvas.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        const mouseEvent = new MouseEvent('mouseup', {});
+        canvas.dispatchEvent(mouseEvent);
+    });
+}
+
+function startDrawing(e) {
+    drawing = true;
+    const rect = e.target.getBoundingClientRect();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+}
+
+function draw(e) {
+    if (!drawing) return;
+    const rect = e.target.getBoundingClientRect();
+    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.stroke();
+}
+
+function stopDrawing() {
+    drawing = false;
+}
+
+function changeColor(color) {
+    currentColor = color;
+    if (ctx) ctx.strokeStyle = color;
+}
+
+function clearCanvas() {
+    const canvas = document.getElementById('drawing-canvas');
+    if (ctx && canvas) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+function backToTopic() {
+    if (currentTopic) {
+        selectTopic(currentTopic);
+    } else {
+        showActivityHub();
+    }
 }
 
 // ============================================
